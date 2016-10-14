@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+
+## notes -
+# lets make this bot into and aws interface into irc
+# features plan:
+# -- ec2 access
+# ---- start, stop, create, info
+# -- s3 access
+# ---- info for now
+# -- iam read write
+# ---- info for now
+
+readonly PROGNAME=$(basename $0)
+readonly PROGDIR=$(readlink -m $(dirname $0))
+
+if [[ -r ${PROGNAME}.config ]]
+then
+    source ${PROGNAME}.config
+else
+    printf "%s\n" "${PROGNAME}.config not found!!"
+fi
+
+# Basic helpers for communication with via IRC protocol
+function RECV() { echo "< $@" >&2; }
+function SEND()
+{
+    echo "> $@" >&2;
+    printf "%s\r\n" "$@" >&3;
+}
+export -f RECV
+export -f SEND
+
+exec 3<>/dev/tcp/${SERVER}/${PORT} \
+    || { echo "Could not connect"; exit 1; }
+
+SEND "NICK ${NICK}"
+SEND "USER ${NICK} 0 * :${NICK}"
+SEND "JOIN ${CHAN} ${CHAN_KEY}"
+
+CHANNEL=
+NAME=
+export CHANNEL NAME
+
+while read -r LINE
+do
+    # strip trailing carriage return
+    LINE=${LINE%%$'\r'}
+
+    RECV "$LINE"
+    set -- $LINE
+
+    case "$1" in
+        :*)
+            # turn: :nickname!example.host.com into: nickname
+            NAME=${1%%!*}
+            NAME=${NAME#:}
+            shift
+            ;;
+    esac
+
+    case "$@" in
+        "PING "*)
+            SEND "PONG $2"
+            continue
+            ;;
+        "PRIVMSG "*" :"*)
+            CHANNEL=$2
+            CMD=${3#:}
+            ARG=${@:4}
+            while IFS= read -r LINE; do
+                if [[ ${CMD} == ".aws" ]]
+                then
+                    aws ec2 describe-instances \
+                        --output text \
+                        --query 'Reservations[*].Instances[*].[InstanceId,KeyName,InstanceType,State.Name]' > tmp.file
+                    cat tmp.file | tr '\t' ' ' | column -t > out.file
+                    _CNT=1
+                    _FCNT=$(wc -l out.file | awk '{print$1}')
+                    SEND "PRIVMSG ${CHANNEL} :Here is your requested info ${NAME}:"
+                    while [[ "${_CNT}" -le "${_FCNT}" ]]
+                    do
+                        _OUT=$(sed -n ${_CNT}p out.file)
+                        SEND "PRIVMSG ${CHANNEL} :${_OUT}"
+                        let _CNT=_CNT+1
+                        sleep .25
+                    done
+                    SEND "PRIVMSG ${CHANNEL} :Here is ARG: ${ARG}"
+                fi
+            done&
+            continue
+            ;;
+        *)
+            continue
+            ;;
+    esac
+done <&3
