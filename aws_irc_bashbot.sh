@@ -1,17 +1,50 @@
 #!/usr/bin/env bash
+#===============================================================================
+#
+#          FILE:
+#
+#         USAGE:
+#
+#   DESCRIPTION:
+#
+#       OPTIONS:
+#  REQUIREMENTS:
+#          BUGS:
+#         NOTES:
+#        AUTHOR: cesar@pissedoffadmins.com
+#  ORGANIZATION: pissedoffadmins.com
+#       CREATED: 14 Oct 2016
+#      REVISION: 1
+#===============================================================================
 
-## notes -
-# lets make this bot into and aws interface into irc
-# features plan:
-# -- ec2 access
-# ---- start, stop, create, info
-# -- s3 access
-# ---- info for now
-# -- iam read write
-# ---- info for now
+LC_ALL=C
+LANG=C
+set -o pipefail
+set -o nounset
+set -o errexit
 
-readonly PROGNAME=$(basename $0)
-readonly PROGDIR=$(readlink -m $(dirname $0))
+PROGNAME=$(basename $0)
+PROGDIR=$(readlink -m $(dirname $0))
+
+ORN=$(tput setaf 3)
+RED=$(tput setaf 1)
+BLU=$(tput setaf 4)
+GRN=$(tput setaf 40)
+CLR=$(tput sgr0)
+MNHDR="${BLU}[*]${CLR} "
+BDHDR="${RED}[*]${CLR} "
+COLHDR="${GRN}[*]${CLR} "
+
+if [[ $(uname) != "Linux" ]]
+then
+    printf "%s\n" "${RED}Needs Linux${CLR}"
+    exit 1
+fi
+
+trap 'rm -rf ${TMP_FILE1 ${TMP_FILE2} ; exit' 0 1 2 3 9 15
+
+TMP_FILE1=$(mktemp --tmpdir ${PROGNAME}.$$.XXXXXXXXXX)
+TMP_FILE2=$(mktemp --tmpdir ${PROGNAME}.$$.XXXXXXXXXX)
 
 if [[ -r ${PROGNAME}.config ]]
 then
@@ -21,11 +54,19 @@ else
 fi
 
 # Basic helpers for communication with via IRC protocol
-function RECV() { echo "< $@" >&2; }
+function RECV()
+{
+    ${ORN}
+    echo "< $@" >&2
+    ${CLR}
+}
+
 function SEND()
 {
+    ${BLU}
     echo "> $@" >&2;
     printf "%s\r\n" "$@" >&3;
+    ${CLR}
 }
 export -f RECV
 export -f SEND
@@ -72,14 +113,14 @@ do
                 then
                     aws ec2 describe-instances \
                         --output text \
-                        --query 'Reservations[*].Instances[*].[InstanceId,KeyName,InstanceType,State.Name]' > tmp.file
-                    cat tmp.file | tr '\t' ' ' | column -t > out.file
+                        --query 'Reservations[*].Instances[*].[InstanceId,KeyName,InstanceType,State.Name]' > ${TMP_FILE1}
+                    cat ${TMP_FILE1} | tr '\t' ' ' | column -t > ${TMP_FILE2}
                     _CNT=1
-                    _FCNT=$(wc -l out.file | awk '{print$1}')
+                    _FCNT=$(wc -l ${TMP_FILE2} | awk '{print$1}')
                     SEND "PRIVMSG ${CHANNEL} :Here is your requested info ${NAME}:"
                     while [[ "${_CNT}" -le "${_FCNT}" ]]
                     do
-                        _OUT=$(sed -n ${_CNT}p out.file)
+                        _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
                         SEND "PRIVMSG ${CHANNEL} :${_OUT}"
                         let _CNT=_CNT+1
                         sleep .25
