@@ -1,7 +1,7 @@
 # help text - this command shows random facts
 function .facts()
 {
-    if [[ -x $(which elinks) ]]
+    if [[ -x $(which elinks 2>&1) ]]
     then
         _FACT=$(elinks -dump randomfunfacts.com \
             | sed -n '/^| /p' \
