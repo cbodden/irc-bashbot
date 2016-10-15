@@ -1,0 +1,16 @@
+# Basic helpers for communication with via IRC protocol
+function RECV()
+{
+    echo -n "${ORN}"
+    echo "< $@" >&2
+    echo -n "${CLR}"
+}
+
+function SEND()
+{
+    echo -n "${BLU}"
+    echo "> $@" >&2
+    printf "%s\r\n" "$@" >&3;
+    echo -n "${CLR}"
+}
+export -f SEND

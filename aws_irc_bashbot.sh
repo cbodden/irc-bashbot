@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
 #===============================================================================
-#
 #          FILE:
-#
 #         USAGE:
-#
 #   DESCRIPTION:
-#
 #       OPTIONS:
 #  REQUIREMENTS:
 #          BUGS:
@@ -19,34 +15,11 @@
 
 source aws_irc_bashbot.config
 source core/main.shlib
+source core/helpers.shlib
+source core/connectors.shlib
+
 main
-
-# Basic helpers for communication with via IRC protocol
-function RECV()
-{
-    echo -n "${ORN}"
-    echo "< $@"
-    # echo "< $@" >&2
-    echo -n "${CLR}"
-}
-
-function SEND()
-{
-    echo -n "${BLU}"
-    echo "> $@"
-    # echo "> $@" >&2
-    printf "%s\r\n" "$@" >&3;
-    echo -n "${CLR}"
-}
-# export -f RECV
-export -f SEND
-
-exec 3<>/dev/tcp/${SERVER}/${PORT} \
-    || { echo "Could not connect"; exit 1; }
-
-SEND "NICK ${NICK}"
-SEND "USER ${NICK} 0 * :${NICK}"
-SEND "JOIN ${CHAN} ${CHAN_KEY}"
+connectors
 
 CHANNEL=
 NAME=
@@ -72,11 +45,7 @@ do
     case "$@" in
         "PING "*)
             _SERVER="$2"
-            # while true
-            # do
                 SEND "PONG ${_SERVER}"
-            #     sleep 180
-            # done &
             continue
             ;;
         "PRIVMSG "*" :"*)

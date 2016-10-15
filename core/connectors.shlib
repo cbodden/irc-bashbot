@@ -1,0 +1,9 @@
+function connectors()
+{
+    exec 3<>/dev/tcp/${SERVER}/${PORT} \
+        || { echo "Could not connect"; exit 1; }
+
+    SEND "NICK ${NICK}"
+    SEND "USER ${NICK} 0 * :${NICK}"
+    SEND "JOIN ${CHAN} ${CHAN_KEY}"
+}
