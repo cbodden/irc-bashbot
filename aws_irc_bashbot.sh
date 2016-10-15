@@ -16,8 +16,8 @@
 source aws_irc_bashbot.config
 source core/main.shlib
 source core/helpers.shlib
+export -f SEND
 source core/connectors.shlib
-
 main
 connectors
 
