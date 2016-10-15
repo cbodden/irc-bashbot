@@ -14,7 +14,15 @@
 #===============================================================================
 
 ## sourcing config file
-source config/irc_bashbot.config
+if [[ -e config/irc_bashbot.config ]]
+then
+    source config/irc_bashbot.config
+else
+    printf "%s\n" \
+        "Config file not found" \
+        "Exiting"
+    exit 1
+fi
 
 ## main script elements like TRAP and TEMP_FILE
 source core/main.shlib
