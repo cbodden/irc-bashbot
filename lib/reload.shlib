@@ -1,0 +1,16 @@
+# help text - this command reloads the script
+function .reload()
+{
+    if [[ "${NAME}" == "${OWNER}" ]]
+    then
+        SEND "PRIVMSG ${CHANNEL} :Reload triggered"
+        SEND "PART ${CHANNEL} :Reload triggered"
+        SEND "QUIT :Reload triggered"
+        exec 3>&-
+        exec ${PROGDIR}/${PROGNAME}
+    else
+        SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
+        sleep .30
+        SEND "PRIVMSG ${CHANNEL} : this action."
+    fi
+}
