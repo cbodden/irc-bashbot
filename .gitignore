@@ -1,3 +1,1 @@
-.settings/
-aws_irc.bashbot.config
-*.file
+irc.bashbot.config
