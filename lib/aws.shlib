@@ -1,5 +1,6 @@
 function .aws()
 {
+    source core/chan_text_out.shlib
     if [[ ! -z "${ARG}" ]]
     then
         _AWS_OPT=${ARG}
@@ -13,17 +14,7 @@ function .aws()
                 --output text \
                 --query 'Reservations[*].Instances[*].[InstanceId,KeyName,InstanceType,State.Name]' \
                 > ${TMP_FILE1}
-            cat ${TMP_FILE1} | tr '\t' ' ' | column -t > ${TMP_FILE2}
-            _CNT=1
-            _FCNT=$(wc -l ${TMP_FILE2} | awk '{print $1}')
-            SEND "PRIVMSG ${CHANNEL} :Here is your requested info ${NAME}:"
-            while [[ "${_CNT}" -le "${_FCNT}" ]]
-            do
-                _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
-                SEND "PRIVMSG ${CHANNEL} :${_OUT}"
-                let _CNT=_CNT+1
-                sleep .25
-            done
+            _chan_text_out
             ;;
         "help")
             ;;
@@ -32,18 +23,9 @@ function .aws()
                 --output text \
                 --query 'Volumes[*].[VolumeId,Attachments[0].InstanceId,Size]' \
                 > ${TMP_FILE1}
-            cat ${TMP_FILE1} | tr '\t' ' ' | column -t > ${TMP_FILE2}
-            _CNT=1
-            _FCNT=$(wc -l ${TMP_FILE2} | awk '{print $1}')
-            SEND "PRIVMSG ${CHANNEL} :Here is your requested info ${NAME}:"
-            while [[ "${_CNT}" -le "${_FCNT}" ]]
-            do
-                _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
-                SEND "PRIVMSG ${CHANNEL} :${_OUT}"
-                let _CNT=_CNT+1
-                sleep .25
-            done
+            _chan_text_out
+            ;;
+        *)
             ;;
     esac
-
 }

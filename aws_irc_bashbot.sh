@@ -13,57 +13,24 @@
 #      REVISION: 1
 #===============================================================================
 
-source aws_irc_bashbot.config
+## sourcing config file
+source config/aws_irc_bashbot.config
+
+## main script elements like TRAP and TEMP_FILE
 source core/main.shlib
+
+## SEND && RECV funcs
 source core/helpers.shlib
 export -f SEND
-source core/connectors.shlib
-main
-connectors
 
-CHANNEL=
-NAME=
+## NICK, USER, JOIN
+source core/connectors.shlib
+
+## main SEND RECV && PONG loop
+source core/loop.shlib
 export CHANNEL NAME
 
-while read -r LINE
-do
-    # strip trailing carriage return
-    LINE=${LINE%%$'\r'}
-
-    RECV "$LINE"
-    set -- $LINE
-
-    case "$1" in
-        :*)
-            # turn: :nickname!example.host.com into: nickname
-            NAME=${1%%!*}
-            NAME=${NAME#:}
-            shift
-            ;;
-    esac
-
-    case "$@" in
-        "PING "*)
-            _SERVER="$2"
-                SEND "PONG ${_SERVER}"
-            continue
-            ;;
-        "PRIVMSG "*" :"*)
-            CHANNEL=$2
-            CMD=${3#:}
-            ARG=${@:4}
-            if [[ ${CMD} = .* ]]
-            then
-                if [[ ${CMD} == ".aws" ]]
-                then
-                    source lib/aws.shlib
-                    .aws
-                fi
-            fi
-            continue
-            ;;
-        *)
-            continue
-            ;;
-    esac
-done <&3
+## calling main funcs
+main
+connectors
+loop
