@@ -1,0 +1,13 @@
+# help text - this command shows random facts
+function .facts()
+{
+    if [[ -x $(which elinks) ]]
+    then
+        _FACT=$(elinks -dump randomfunfacts.com \
+            | sed -n '/^| /p' \
+            | tr -d \|)
+        SEND "PRIVMSG ${CHANNEL} :${_FACT}"
+    else
+        SEND "PRIVMSG ${CHANNEL} :elinks is not installed"
+    fi
+}
