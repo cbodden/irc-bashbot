@@ -26,7 +26,21 @@ function loop()
                 SEND "PONG ${_SERVER}"
                 continue
                 ;;
-            "PRIVMSG "*" :"*)
+            "PRIVMSG ${CHAN} :${NICK}: "*)
+                ## direct message in chan
+                SEND "PRIVMSG ${CHAN} :${NAME}: MSG in chan until fixed."
+                continue
+                ;;
+            "PRIVMSG ${NICK} :"*)
+                ## direct message
+                if [[ "${2}" == "${NICK}" ]]
+                then
+                    SEND "PRIVMSG ${NAME} :MSG in chan until fixed."
+                fi
+                continue
+                ;;
+            "PRIVMSG ${CHAN} :"*)
+                ## global in chan
                 CHANNEL=$2
                 CMD=${3#:}
                 ARG=${@:4}
@@ -47,12 +61,12 @@ function loop()
                                 ${CMD}
                             fi
                         done
-                fi
-                continue
-                ;;
-            *)
-                continue
-                ;;
-        esac
-    done <&3
-}
+                    fi
+                    continue
+                    ;;
+                *)
+                    continue
+                    ;;
+            esac
+        done <&3
+    }
