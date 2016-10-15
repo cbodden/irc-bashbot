@@ -14,7 +14,7 @@
 #===============================================================================
 
 ## sourcing config file
-source config/aws_irc_bashbot.config
+source config/irc_bashbot.config
 
 ## main script elements like TRAP and TEMP_FILE
 source core/main.shlib

@@ -1,0 +1,24 @@
+# help text - this command
+function .help()
+{
+    declare -a _HELP=($(\
+        for HELP in lib/*
+        do
+            HELP=${HELP#*/}
+            HELP=${HELP%.*}
+            echo ${HELP}
+        done))
+        _OCNT=0
+        _ACNT="${#_HELP[@]}"
+        SEND "PRIVMSG ${CHANNEL} :These are the commands available:"
+        SEND "PRIVMSG ${CHANNEL} :=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+        while [[ "${_OCNT}" -lt "${_ACNT}" ]]
+        do
+            _HELP_TEXT=$(head -n 1 lib/${_HELP[${_OCNT}]}.shlib \
+                | sed -n -e 's/^.*- //p')
+            SEND "PRIVMSG ${CHANNEL} :.${_HELP[${_OCNT}]} - ${_HELP_TEXT}"
+            let _OCNT=_OCNT+1
+            sleep .30
+        done
+        SEND "PRIVMSG ${CHANNEL} : "
+}

@@ -1,3 +1,4 @@
+# help text - this command shows some aws information
 function .aws()
 {
     source core/chan_text_out.shlib
