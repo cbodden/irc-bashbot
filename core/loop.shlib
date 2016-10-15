@@ -35,7 +35,10 @@ function loop()
                 ## direct message
                 if [[ "${2}" == "${NICK}" ]]
                 then
-                    SEND "PRIVMSG ${NAME} :MSG in chan until fixed."
+                    if [[ "${3}" == ":${OWNER_PW}" ]]
+                    then
+                        SEND "PRIVMSG ${NAME} :MSG in chan until fixed."
+                    fi
                 fi
                 continue
                 ;;
