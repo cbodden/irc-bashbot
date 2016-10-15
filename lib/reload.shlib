@@ -3,9 +3,9 @@ function .reload()
 {
     if [[ "${NAME}" == "${OWNER}" ]]
     then
-        SEND "PRIVMSG ${CHANNEL} :Reload triggered"
-        SEND "PART ${CHANNEL} :Reload triggered"
-        SEND "QUIT :Reload triggered"
+        SEND "PRIVMSG ${CHANNEL} :Reload triggered by ${NAME}"
+        SEND "PART ${CHANNEL} :Reload triggered by ${NAME}"
+        SEND "QUIT :Reload triggered by ${NAME}"
         exec 3>&-
         exec ${PROGDIR}/${PROGNAME}
     else
