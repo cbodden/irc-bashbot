@@ -1,0 +1,31 @@
+LC_ALL=C
+LANG=C
+set -o pipefail
+set -o nounset
+set -o errexit
+
+function main()
+{
+    readonly PROGNAME=$(basename $0)
+    readonly PROGDIR=$(readlink -m $(dirname $0))
+
+    readonly ORN=$(tput setaf 3)
+    readonly RED=$(tput setaf 1)
+    readonly BLU=$(tput setaf 4)
+    readonly GRN=$(tput setaf 40)
+    readonly CLR=$(tput sgr0)
+    readonly MNHDR="${BLU}[*]${CLR} "
+    readonly BDHDR="${RED}[*]${CLR} "
+    readonly COLHDR="${GRN}[*]${CLR} "
+
+    if [[ $(uname) != "Linux" ]]
+    then
+        printf "%s\n" "${RED}Needs Linux${CLR}"
+        exit 1
+    fi
+
+    trap 'rm -rf ${TMP_FILE1} ${TMP_FILE2}' EXIT
+
+    TMP_FILE1=$(mktemp --tmpdir ${PROGNAME}.$$.XXXXXXXXXX)
+    TMP_FILE2=$(mktemp --tmpdir ${PROGNAME}.$$.XXXXXXXXXX)
+}
