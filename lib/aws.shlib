@@ -10,20 +10,39 @@ function .aws()
 
     case "${_AWS_OPT}" in
         "instances")
-            aws ec2 describe-instances \
-                --output text \
-                --query 'Reservations[*].Instances[*].[InstanceId,KeyName,InstanceType,State.Name]' \
-                > ${TMP_FILE1}
-            _chan_text_out
+            if [[ "${NAME}" == "${OWNER}" ]]
+            then
+                aws ec2 describe-instances \
+                    --output text \
+                    --query 'Reservations[*].Instances[*].[InstanceId,KeyName,InstanceType,State.Name]' \
+                    > ${TMP_FILE1}
+                _chan_text_out
+            else
+                SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
+                sleep .30
+                SEND "PRIVMSG ${CHANNEL} : this action."
+            fi
             ;;
         "help")
+            SEND "PRIVMSG ${CHANNEL} :Available AWS commands:"
+            SEND "PRIVMSG ${CHANNEL} :=-=-=-=-=-=-=-=-=-=-=-="
+            SEND "PRIVMSG ${CHANNEL} :instances - this will list your instances"
+            SEND "PRIVMSG ${CHANNEL} :volumes   - this will list your volumes"
+            SEND "PRIVMSG ${CHANNEL} : "
             ;;
         "volumes")
-            aws ec2 describe-volumes \
-                --output text \
-                --query 'Volumes[*].[VolumeId,Attachments[0].InstanceId,Size]' \
-                > ${TMP_FILE1}
-            _chan_text_out
+            if [[ "${NAME}" == "${OWNER}" ]]
+            then
+                aws ec2 describe-volumes \
+                    --output text \
+                    --query 'Volumes[*].[VolumeId,Attachments[0].InstanceId,Size]' \
+                    > ${TMP_FILE1}
+                _chan_text_out
+            else
+                SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
+                sleep .30
+                SEND "PRIVMSG ${CHANNEL} : this action."
+            fi
             ;;
         *)
             ;;
