@@ -72,11 +72,11 @@ do
     case "$@" in
         "PING "*)
             _SERVER="$2"
-            while true
-            do
+            # while true
+            # do
                 SEND "PONG ${_SERVER}"
-                sleep 180
-            done &
+            #     sleep 180
+            # done &
             continue
             ;;
         "PRIVMSG "*" :"*)
