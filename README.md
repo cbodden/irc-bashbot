@@ -27,10 +27,8 @@ Requirements
 ----
 
 - Bash (https://www.gnu.org/software/bash/)
-For AWS lib:
-- AWS cli tools (https://aws.amazon.com/cli/)
-For Facts lib:
-- Elinks (http://elinks.or.cz/)
+- For AWS lib: AWS cli tools (https://aws.amazon.com/cli/)
+- For Facts lib: Elinks (http://elinks.or.cz/)
 
 License and Author
 ----
