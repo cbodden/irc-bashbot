@@ -3,7 +3,7 @@ function RECV()
 {
     echo -n "${ORN}"
     # echo "< $@" >&2
-    echo "< $@" >>${LOG} 2>&1
+    echo "[$(date +"%R")] [<<] $@" >>${LOG} 2>&1
     echo -n "${CLR}"
 }
 
@@ -11,7 +11,7 @@ function SEND()
 {
     echo -n "${BLU}"
     # echo "> $@" >&2
-    echo "> $@" >>${LOG} 2>&1
+    echo "[$(date +"%R")] [>>] $@" >>${LOG} 2>&1
     printf "%s\r\n" "$@" >&3
     echo -n "${CLR}"
 }
