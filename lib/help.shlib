@@ -10,6 +10,7 @@ function .help()
         done))
         _OCNT=0
         _ACNT="${#_HELP[@]}"
+        SEND "PRIVMSG ${CHANNEL} : "
         SEND "PRIVMSG ${CHANNEL} :These are the commands available:"
         SEND "PRIVMSG ${CHANNEL} :=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
         while [[ "${_OCNT}" -lt "${_ACNT}" ]]
