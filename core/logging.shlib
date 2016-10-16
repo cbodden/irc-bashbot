@@ -1,6 +1,6 @@
 function logging()
 {
-    _DATE=$(date +"%Y%m%e_%H%M%S")
+    local _DATE=$(date +"%Y%m%e_%H%M%S")
     _LOGPATH="log/"
     _LOGFILE="${PROGNAME%.*}_${_DATE}.log"
     LOG="${_LOGPATH}${_LOGFILE}"
