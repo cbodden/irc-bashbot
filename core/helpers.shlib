@@ -13,6 +13,7 @@ function SEND()
     # echo "> $@" >&2
     echo "[$(date +"%R")] [>>] $@" >>${LOG} 2>&1
     printf "%s\r\n" "$@" >&3
+    sleep .25
     echo -n "${CLR}"
 }
 export -f SEND

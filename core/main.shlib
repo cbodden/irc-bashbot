@@ -9,9 +9,10 @@ function main()
     readonly PROGNAME=$(basename $0)
     readonly PROGDIR=$(readlink -m $(dirname $0))
 
-    PIDFILE="${PROGNAME%.*}.pid"
+    readonly PIDFILE="${PROGNAME%.*}.pid"
     echo $$ >${PIDFILE}
 
+    readonly ST_TIME=$(date +"%s")
     readonly ORN=$(tput setaf 3)
     readonly RED=$(tput setaf 1)
     readonly BLU=$(tput setaf 4)

@@ -11,7 +11,6 @@ function _chan_text_out()
         local _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
         SEND "PRIVMSG ${CHANNEL} :${_OUT}"
         let _CNT=_CNT+1
-        sleep .25
     done
     SEND "PRIVMSG ${CHANNEL} : "
 }

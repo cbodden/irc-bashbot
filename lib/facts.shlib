@@ -17,7 +17,6 @@ function .facts()
                     | sed -n ${_CNT}p)
                 SEND "PRIVMSG ${CHANNEL} :${_OUT}"
                 let _CNT=_CNT+1
-                sleep .25
             done
         else
             SEND "PRIVMSG ${CHANNEL} :${_FACT}"

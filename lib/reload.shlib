@@ -10,7 +10,6 @@ function .reload()
         exec ${PROGDIR}/${PROGNAME}
     else
         SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
-        sleep .30
         SEND "PRIVMSG ${CHANNEL} : this action."
     fi
 }

@@ -10,7 +10,6 @@ function .kill()
         kill -9 $(< ${PIDFILE})
     else
         SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
-        sleep .30
         SEND "PRIVMSG ${CHANNEL} : this action."
     fi
 }

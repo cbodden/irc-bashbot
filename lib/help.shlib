@@ -19,7 +19,6 @@ function .help()
                 | sed -n -e 's/^.*- //p')
             SEND "PRIVMSG ${CHANNEL} :.${_HELP[${_OCNT}]} - ${_HELP_TEXT}"
             let _OCNT=_OCNT+1
-            sleep .30
         done
         SEND "PRIVMSG ${CHANNEL} : "
 }
