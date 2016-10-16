@@ -27,6 +27,9 @@ fi
 ## main script elements like TRAP and TEMP_FILE
 source core/main.shlib
 
+## logging shlib
+source core/logging.shlib
+
 ## SEND && RECV funcs
 source core/helpers.shlib
 export -f SEND
@@ -40,5 +43,6 @@ export CHANNEL NAME
 
 ## calling main funcs
 main
+logging
 connectors
 loop

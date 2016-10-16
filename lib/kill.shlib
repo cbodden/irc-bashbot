@@ -1,0 +1,16 @@
+# help text - this command kills the script
+function .kill()
+{
+    if [[ "${NAME}" == "${OWNER}" ]]
+    then
+        SEND "PRIVMSG ${CHANNEL} :Kill triggered by ${NAME}"
+        SEND "PART ${CHANNEL} :Kill triggered by ${NAME}"
+        SEND "QUIT :Kill  triggered by ${NAME}"
+        exec 3>&-
+        kill -9 $(< ${PIDFILE})
+    else
+        SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
+        sleep .30
+        SEND "PRIVMSG ${CHANNEL} : this action."
+    fi
+}

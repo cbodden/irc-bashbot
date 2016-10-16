@@ -1,2 +1,4 @@
-irc.bashbot.config
+irc_bashbot.config
+config/irc_bashbot.config
 irc_bashbot.pid
+current.log

@@ -1,0 +1,20 @@
+function logging()
+{
+    _DATE=$(date +"%Y%m%e_%H%M%S")
+    _LOGPATH="log/"
+    _LOGFILE="${PROGNAME%.*}_${_DATE}.log"
+    LOG="${_LOGPATH}${_LOGFILE}"
+
+    if [[ ! -d "${_LOGPATH}" ]]
+    then
+        mkdir ${_LOGPATH}
+    fi
+
+    if [[ -L "current.log" ]]
+    then
+        rm current.log
+        ln -s ${LOG} current.log
+    else
+        ln -s ${LOG} current.log
+    fi
+}
