@@ -1,5 +1,3 @@
-explanation of the irc_bashbot.config file
-
 ## this is the nick that the bot will use
 NICK="irc-bashbot"
 ## what irc server to connect to
