@@ -4,9 +4,9 @@ function .aws()
     source core/chan_text_out.shlib
     if [[ ! -z "${ARG}" ]]
     then
-        _AWS_OPT=${ARG}
+        local _AWS_OPT=${ARG}
     else
-        _AWS_OPT=help
+        local _AWS_OPT=help
     fi
 
     case "${_AWS_OPT}" in
