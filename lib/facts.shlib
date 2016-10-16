@@ -3,10 +3,25 @@ function .facts()
 {
     if [[ -x $(which elinks 2>&1) ]]
     then
-        _FACT=$(elinks -dump randomfunfacts.com \
+        local _FACT=$(elinks -dump randomfunfacts.com \
             | sed -n '/^| /p' \
             | tr -d \|)
-        SEND "PRIVMSG ${CHANNEL} :${_FACT}"
+
+        local _CNT=1
+        local _FCNT=$(grep -c . <<<"${_FACT}")
+        if (( $(grep -c . <<<"${_FACT}") > 1 ))
+        then
+            while [[ "${_CNT}" -le "${_FCNT}" ]]
+            do
+                local _OUT=$(echo -e "${_FACT}" \
+                    | sed -n ${_CNT}p)
+                SEND "PRIVMSG ${CHANNEL} :${_OUT}"
+                let _CNT=_CNT+1
+                sleep .25
+            done
+        else
+            SEND "PRIVMSG ${CHANNEL} :${_FACT}"
+        fi
     else
         SEND "PRIVMSG ${CHANNEL} :elinks is not installed"
     fi
