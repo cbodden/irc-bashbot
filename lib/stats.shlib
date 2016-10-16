@@ -1,0 +1,21 @@
+# help text - give bot stats
+function .stats()
+{
+    ## time for maths
+    local CH_TIME=$(date +"%s")
+    local TOT_TIME=$((CH_TIME-ST_TIME))
+    local _SEC=$((TOT_TIME%60))
+    [[ "${_SEC}" -lt 9 ]] && { local _SEC="0${_SEC}" ; }
+    local _MIN=$((TOT_TIME/60))
+    [[ "${_MIN}" -lt 9 ]] && { local _MIN="0${_MIN}" ; }
+    local _HOUR=$((TOT_TIME/3600))
+    [[ "${_HOUR}" -lt 9 ]] && { local _HOUR="0${_HOUR}" ; }
+    local _DAY=$((TOT_TIME/86400))
+    [[ "${_DAY}" -lt 9 ]] && { local _DAY="0${_DAY}" ; }
+    local _FMT_TIME="${_DAY}:${_HOUR}:${_MIN}:${_SEC}"
+
+    SEND "PRIVMSG ${CHANNEL} :Running time: ${_FMT_TIME}"
+    SEND "PRIVMSG ${CHANNEL} :Script name : ${PROGNAME}"
+    SEND "PRIVMSG ${CHANNEL} :Process ID  : $(< ${PIDFILE})"
+    SEND "PRIVMSG ${CHANNEL} :Log file    : ${_LOGFILE}"
+}
