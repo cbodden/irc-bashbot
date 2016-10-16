@@ -1,7 +1,6 @@
 # help text - give bot stats
 function .stats()
 {
-    ## time for maths
     local CH_TIME=$(date +"%s")
     local TOT_TIME=$((CH_TIME-ST_TIME))
     local _SEC=$(printf %02d $((TOT_TIME%60)))
@@ -10,14 +9,11 @@ function .stats()
     local _DAY=$(printf %02d $((TOT_TIME/86400)))
     local _FMT_TIME="${_DAY}:${_HOUR}:${_MIN}:${_SEC}"
 
-
-
-
-
-
+    SEND "PRIVMSG ${CHANNEL} : "
     SEND "PRIVMSG ${CHANNEL} :Here are some stats: "
     SEND "PRIVMSG ${CHANNEL} :Running time: ${_FMT_TIME}"
     SEND "PRIVMSG ${CHANNEL} :Script name : ${PROGNAME}"
     SEND "PRIVMSG ${CHANNEL} :Process ID  : $(< ${PIDFILE})"
     SEND "PRIVMSG ${CHANNEL} :Log file    : ${_LOGFILE}"
+    SEND "PRIVMSG ${CHANNEL} : "
 }
