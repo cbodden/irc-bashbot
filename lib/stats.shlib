@@ -7,10 +7,14 @@ function .stats()
     local MEM_USE=$(awk '/VmSize/ {print $2,$3}' /proc/$(< ${PIDFILE})/status \
         | tr '\t' ' ' \
         | sed 's/^ *//')
-    SEND "PRIVMSG ${CHANNEL} Here are some stats: "
-    SEND "PRIVMSG ${CHANNEL} Script name : ${PROGNAME}"
-    SEND "PRIVMSG ${CHANNEL} Running time: ${_DAYS}:$(date +%T -ud @${R_TIME})"
-    SEND "PRIVMSG ${CHANNEL} Process ID  : $(< ${PIDFILE})"
-    SEND "PRIVMSG ${CHANNEL} Log file    : ${_LOGFILE}"
-    SEND "PRIVMSG ${CHANNEL} Memory used : ${MEM_USE#*:}"
+    printf "%s\n" \
+        "Here are some stats: " \
+        "Script name : ${PROGNAME}" \
+        "Running time: ${_DAYS}:$(date +%T -ud @${R_TIME})" \
+        "Process ID  : $(< ${PIDFILE})" \
+        "Log file    : ${_LOGFILE}" \
+        "Memory used : ${MEM_USE#*:}" \
+        | tee ${TMP_FILE1} > /dev/null
+    source core/chan_text_out.shlib
+    _chan_text_out
 }
