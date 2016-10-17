@@ -3,9 +3,14 @@ function _chan_text_out()
     local _COL_ONE="$1"
     if [[ "${_COL_ONE}" == "col" ]]
     then
-        cat ${TMP_FILE1} | tr '\t' ' ' | column -t > ${TMP_FILE2}
+        cat ${TMP_FILE1} \
+            | tr '\t' ' ' \
+            | column -t \
+            > ${TMP_FILE2}
     else
-        cat ${TMP_FILE1} | tr '\t' ' '  > ${TMP_FILE2}
+        cat ${TMP_FILE1} \
+            | tr '\t' ' '  \
+            > ${TMP_FILE2}
     fi
     local _CNT=1
     local _FCNT=$(wc -l ${TMP_FILE2} \
