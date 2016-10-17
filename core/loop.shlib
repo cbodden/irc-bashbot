@@ -28,48 +28,28 @@ function loop()
                 ;;
             "PRIVMSG ${CHAN} :${NICK}: "*)
                 ## direct message in chan
-                SEND "PRIVMSG ${CHAN} :${NAME}: MSG in chan until fixed."
-                continue
+                CHANNEL="${CHAN} :${NAME}:"
+                CMD=${4#:}
+                ARG=${@:5}
                 ;;
             "PRIVMSG ${NICK} :"*)
                 ## direct message
-                if [[ "${2}" == "${NICK}" ]]
-                then
-                    if [[ "${3}" == ":${OWNER_PW}" ]]
-                    then
-                        SEND "PRIVMSG ${NAME} :MSG in chan until fixed."
-                    fi
-                fi
-                continue
-                ;;
-            "PRIVMSG ${CHAN} :"*)
-                ## global in chan
-                CHANNEL=$2
+                CHANNEL="${NAME} :"
                 CMD=${3#:}
                 ARG=${@:4}
-                if [[ ${CMD} = .* ]]
-                then
-                    declare -a _LIB=($(\
-                        for _ELL in lib/*
-                        do
-                            _ELL=${_ELL#*/}
-                            _ELL=${_ELL%.*}
-                            echo ${_ELL}
-                        done))
-                        for LIB in "${_LIB[@]}"
-                        do
-                            if [[ ".${LIB}" == "${CMD}" ]]
-                            then
-                                source lib/${LIB}.shlib
-                                ${CMD}
-                            fi
-                        done
-                    fi
-                    continue
-                    ;;
-                *)
-                    continue
-                    ;;
-            esac
-        done <&3
-    }
+                ;;
+            "PRIVMSG ${CHAN} :"*)
+                ## whole chan
+                CHANNEL="$2 :"
+                CMD=${3#:}
+                ARG=${@:4}
+                ;;
+            *)
+                continue
+                ;;
+        esac
+        source core/privmsg_chan_all.shlib
+        privmsg_chan_all
+        continue
+    done <&3
+}

@@ -4,11 +4,11 @@ function .stats()
     local CH_TIME=$(date +"%s")
     local RUN_TIME=$((CH_TIME-ST_TIME))
 
-    SEND "PRIVMSG ${CHANNEL} : "
-    SEND "PRIVMSG ${CHANNEL} :Here are some stats: "
-    SEND "PRIVMSG ${CHANNEL} :Running time: $(date +%T -ud @${RUN_TIME})"
-    SEND "PRIVMSG ${CHANNEL} :Script name : ${PROGNAME}"
-    SEND "PRIVMSG ${CHANNEL} :Process ID  : $(< ${PIDFILE})"
-    SEND "PRIVMSG ${CHANNEL} :Log file    : ${_LOGFILE}"
-    SEND "PRIVMSG ${CHANNEL} : "
+    SEND "PRIVMSG ${CHANNEL}  "
+    SEND "PRIVMSG ${CHANNEL} Here are some stats: "
+    SEND "PRIVMSG ${CHANNEL} Running time: $(date +%T -ud @${RUN_TIME})"
+    SEND "PRIVMSG ${CHANNEL} Script name : ${PROGNAME}"
+    SEND "PRIVMSG ${CHANNEL} Process ID  : $(< ${PIDFILE})"
+    SEND "PRIVMSG ${CHANNEL} Log file    : ${_LOGFILE}"
+    SEND "PRIVMSG ${CHANNEL}  "
 }

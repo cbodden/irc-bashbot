@@ -19,16 +19,15 @@ function .aws()
                     > ${TMP_FILE1}
                 _chan_text_out
             else
-                SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
-                SEND "PRIVMSG ${CHANNEL} : this action."
+                SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
             fi
             ;;
         "help")
-            SEND "PRIVMSG ${CHANNEL} :Available AWS commands:"
-            SEND "PRIVMSG ${CHANNEL} :=-=-=-=-=-=-=-=-=-=-=-="
-            SEND "PRIVMSG ${CHANNEL} :instances - this will list your instances"
-            SEND "PRIVMSG ${CHANNEL} :volumes   - this will list your volumes"
-            SEND "PRIVMSG ${CHANNEL} : "
+            SEND "PRIVMSG ${CHANNEL} Available AWS commands:"
+            SEND "PRIVMSG ${CHANNEL} =-=-=-=-=-=-=-=-=-=-=-="
+            SEND "PRIVMSG ${CHANNEL} instances - this will list your instances"
+            SEND "PRIVMSG ${CHANNEL} volumes   - this will list your volumes"
+            SEND "PRIVMSG ${CHANNEL}  "
             ;;
         "volumes")
             if [[ "${NAME}" == "${OWNER}" ]]
@@ -39,8 +38,7 @@ function .aws()
                     > ${TMP_FILE1}
                 _chan_text_out
             else
-                SEND "PRIVMSG ${CHANNEL} :You are not registered to perform"
-                SEND "PRIVMSG ${CHANNEL} : this action."
+                SEND "PRIVMSG ${CHANNEL} :You are not registered to perform this action."
             fi
             ;;
         *)

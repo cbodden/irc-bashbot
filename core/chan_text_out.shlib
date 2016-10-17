@@ -4,13 +4,13 @@ function _chan_text_out()
     local _CNT=1
     local _FCNT=$(wc -l ${TMP_FILE2} \
         | awk '{print $1}')
-    SEND "PRIVMSG ${CHANNEL} :Here is your requested info ${NAME}:"
-    SEND "PRIVMSG ${CHANNEL} :=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
+    SEND "PRIVMSG ${CHANNEL} Here is your requested info ${NAME}:"
+    SEND "PRIVMSG ${CHANNEL} =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
     while [[ "${_CNT}" -le "${_FCNT}" ]]
     do
         local _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
-        SEND "PRIVMSG ${CHANNEL} :${_OUT}"
+        SEND "PRIVMSG ${CHANNEL} ${_OUT}"
         let _CNT=_CNT+1
     done
-    SEND "PRIVMSG ${CHANNEL} : "
+    SEND "PRIVMSG ${CHANNEL}  "
 }

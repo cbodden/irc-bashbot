@@ -15,13 +15,13 @@ function .facts()
             do
                 local _OUT=$(echo -e "${_FACT}" \
                     | sed -n ${_CNT}p)
-                SEND "PRIVMSG ${CHANNEL} :${_OUT}"
+                SEND "PRIVMSG ${CHANNEL} ${_OUT}"
                 let _CNT=_CNT+1
             done
         else
-            SEND "PRIVMSG ${CHANNEL} :${_FACT}"
+            SEND "PRIVMSG ${CHANNEL} ${_FACT}"
         fi
     else
-        SEND "PRIVMSG ${CHANNEL} :elinks is not installed"
+        SEND "PRIVMSG ${CHANNEL} elinks is not installed"
     fi
 }
