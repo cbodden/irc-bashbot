@@ -17,37 +17,41 @@ function loop()
                 ;;
         esac
 
+        local _LOOP=""
         case "$@" in
             "PING "*)
                 _SERVER="$2"
                 SEND "PONG ${_SERVER}"
-                continue
                 ;;
             "PRIVMSG ${CHAN} :${NICK}: "*)
                 ## direct message in chan
                 CHANNEL="${CHAN} :${NAME}:"
                 CMD=${4#:}
                 ARG=${@:5}
+                local _LOOP="ENABLE"
                 ;;
             "PRIVMSG ${NICK} :"*)
                 ## direct message
                 CHANNEL="${NAME} :"
                 CMD=${3#:}
                 ARG=${@:4}
+                local _LOOP="ENABLE"
                 ;;
             "PRIVMSG ${CHAN} :"*)
                 ## whole chan
                 CHANNEL="$2 :"
                 CMD=${3#:}
                 ARG=${@:4}
+                local _LOOP="ENABLE"
                 ;;
             *)
-                continue
                 ;;
         esac
-
-        source core/privmsg_chan_all.shlib
-        privmsg_chan_all
+        if [[ "${_LOOP}" == "ENABLE" ]]
+        then
+            source core/privmsg_chan_all.shlib
+            privmsg_chan_all
+        fi
         continue
     done <&3
 }
