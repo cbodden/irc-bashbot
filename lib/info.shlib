@@ -4,10 +4,7 @@ function .info()
     printf "%s\n" \
         "${PROGNAME%.*} is an irc bot written in bash." \
         "source can be found at : " \
-        "    $(git remote -v \
-            | awk '{print $2}' \
-            | sort \
-            | uniq)" \
+        "    $(git config --get remote.origin.url)" \
         "currently at commit : " \
         "    $(git rev-parse HEAD)" \
         | tee ${TMP_FILE1} > /dev/null
