@@ -8,7 +8,8 @@ function .info()
             | awk '{print $2}' \
             | sort \
             | uniq)" \
-        "currently at commit $(git rev-parse HEAD)" \
+        "currently at commit : " \
+        "    $(git rev-parse HEAD)" \
         | tee ${TMP_FILE1} > /dev/null
     source core/chan_text_out.shlib
     _chan_text_out
