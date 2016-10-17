@@ -10,9 +10,6 @@ function .help()
         done))
         local _OCNT=0
         local _ACNT="${#_HELP[@]}"
-        SEND "PRIVMSG ${CHANNEL}  "
-        SEND "PRIVMSG ${CHANNEL} These are the commands available:"
-        SEND "PRIVMSG ${CHANNEL} =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="
         while [[ "${_OCNT}" -lt "${_ACNT}" ]]
         do
             local _HELP_TEXT=$(head -n 1 lib/${_HELP[${_OCNT}]}.shlib \
@@ -20,5 +17,4 @@ function .help()
             SEND "PRIVMSG ${CHANNEL} .${_HELP[${_OCNT}]} - ${_HELP_TEXT}"
             let _OCNT=_OCNT+1
         done
-        SEND "PRIVMSG ${CHANNEL}  "
 }
