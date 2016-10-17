@@ -2,7 +2,8 @@
 function .stats()
 {
     local CH_TIME=$(date +"%s")
-    local RUN_TIME=$((CH_TIME-ST_TIME))
+    local R_TIME=$((CH_TIME-ST_TIME))
+    local _DAYS=$(printf "%02d" $((R_TIME / 86400)))
     local MEM_USE=$(awk '/VmSize/ {print $2,$3}' /proc/$(< ${PIDFILE})/status \
         | tr '\t' ' ' \
         | sed 's/^ *//')
@@ -10,7 +11,7 @@ function .stats()
     SEND "PRIVMSG ${CHANNEL}  "
     SEND "PRIVMSG ${CHANNEL} Here are some stats: "
     SEND "PRIVMSG ${CHANNEL} Script name : ${PROGNAME}"
-    SEND "PRIVMSG ${CHANNEL} Running time: $(date +%T -ud @${RUN_TIME})"
+    SEND "PRIVMSG ${CHANNEL} Running time: ${_DAYS}:$(date +%T -ud @${R_TIME})"
     SEND "PRIVMSG ${CHANNEL} Process ID  : $(< ${PIDFILE})"
     SEND "PRIVMSG ${CHANNEL} Log file    : ${_LOGFILE}"
     SEND "PRIVMSG ${CHANNEL} Memory used : ${MEM_USE#*:}"
