@@ -24,8 +24,7 @@ else
     exit 1
 fi
 
-## make sure script is running in the background if not
-## force it
+## make sure script is running in the background if not force it
 _TMPPID="$$"
 case $(ps -o stat= -p $$) in
     *+*)
