@@ -44,7 +44,6 @@ source core/logging.shlib
 
 ## SEND && RECV funcs
 source core/helpers.shlib
-export -f SEND
 
 ## NICK, USER, JOIN
 source core/connectors.shlib
