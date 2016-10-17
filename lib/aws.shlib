@@ -38,7 +38,7 @@ function .aws()
                     > ${TMP_FILE1}
                 _chan_text_out
             else
-                SEND "PRIVMSG ${CHANNEL} :You are not registered to perform this action."
+                SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
             fi
             ;;
         *)
