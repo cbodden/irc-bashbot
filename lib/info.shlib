@@ -1,0 +1,7 @@
+# help text - this shows git info
+function .info()
+{
+    SEND "PRIVMSG ${CHANNEL} ${PROGNAME%.*} is an irc bot written in bash."
+    SEND "PRIVMSG ${CHANNEL} source can be found at : https://github.com/cbodden/irc-bashbot"
+    SEND "PRIVMSG ${CHANNEL} currently at commit $(git rev-parse HEAD)"
+}
