@@ -16,5 +16,4 @@ function _chan_text_out()
         SEND "PRIVMSG ${CHANNEL} ${_OUT}"
         let _CNT=_CNT+1
     done
-    SEND "PRIVMSG ${CHANNEL}  "
 }
