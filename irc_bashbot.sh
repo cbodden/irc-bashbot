@@ -49,7 +49,6 @@ source core/connectors.shlib
 
 ## main SEND RECV && PONG loop
 source core/loop.shlib
-export CHANNEL NAME
 
 ## calling main funcs
 main
