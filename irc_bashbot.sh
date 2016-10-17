@@ -34,7 +34,6 @@ case $(ps -o stat= -p $$) in
         ;;
     *)
         ## if running in background
-        continue
         ;;
 esac
 
