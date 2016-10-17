@@ -3,8 +3,7 @@ function .stats()
 {
     local CH_TIME=$(date +"%s")
     local RUN_TIME=$((CH_TIME-ST_TIME))
-    local MEM_USE=$(cat /proc/$(< ${PIDFILE})/status \
-        | grep VmSize \
+    local MEM_USE=$(awk '/VmSize/ {print $2,$3}' /proc/$(< ${PIDFILE})/status \
         | tr '\t' ' ' \
         | sed 's/^ *//')
 

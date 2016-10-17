@@ -16,7 +16,7 @@ function main()
 
     if [[ $(uname) != "Linux" ]]
     then
-        printf "%s\n" "${RED}Needs Linux${CLR}"
+        printf "%s\n" "Needs Linux"
         exit 1
     fi
 
