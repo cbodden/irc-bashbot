@@ -4,16 +4,16 @@
 #         USAGE: ./irc_bashbot.sh
 #   DESCRIPTION: this is an irc bot that accepts commands real time
 #       OPTIONS: none so far
-#  REQUIREMENTS: determining
+#  REQUIREMENTS: decently minimal for now
 #          BUGS: there are some just have not found them yet
-#         NOTES:
+#         NOTES: better documentation in the README file
 #        AUTHOR: cesar@pissedoffadmins.com
 #  ORGANIZATION: pissedoffadmins.com
 #       CREATED: 14 Oct 2016
-#      REVISION: 10
+#      REVISION: 11
 #===============================================================================
 
-## sourcing config file
+## check and source config file
 if [[ -e config/irc_bashbot.config ]]
 then
     source config/irc_bashbot.config
@@ -28,10 +28,13 @@ fi
 _TMPPID="$$"
 case $(ps -o stat= -p $$) in
     *+*)
+        ## if running in foreground
         exec $0 & disown $!
         kill -9 ${_TMPPID} 2>&1
         ;;
     *)
+        ## if running in background
+        continue
         ;;
 esac
 
