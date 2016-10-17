@@ -1,8 +1,5 @@
 function loop()
 {
-    CHANNEL=
-    NAME=
-
     while read -r LINE
     do
         # strip trailing carriage return
