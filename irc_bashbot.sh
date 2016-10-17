@@ -10,7 +10,7 @@
 #        AUTHOR: cesar@pissedoffadmins.com
 #  ORGANIZATION: pissedoffadmins.com
 #       CREATED: 14 Oct 2016
-#      REVISION: 7
+#      REVISION: 8
 #===============================================================================
 
 ## sourcing config file
@@ -23,6 +23,18 @@ else
         "Exiting"
     exit 1
 fi
+
+## make sure script is running in the background if not
+## force it
+_TMPPID="$$"
+case $(ps -o stat= -p $$) in
+    *+*)
+        exec $0 & disown $!
+        kill -9 ${_TMPPID} 2>&1
+        ;;
+    *)
+        ;;
+esac
 
 ## main script elements like TRAP and TEMP_FILE
 source core/main.shlib
