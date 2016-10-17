@@ -1,0 +1,21 @@
+function privmsg_chan_all()
+{
+    if [[ ${CMD} = .* ]]
+    then
+        declare -a _LIB=($(\
+            for _ELL in lib/*
+            do
+                _ELL=${_ELL#*/}
+                _ELL=${_ELL%.*}
+                echo ${_ELL}
+            done))
+            for LIB in "${_LIB[@]}"
+            do
+                if [[ ".${LIB}" == "${CMD}" ]]
+                then
+                    source lib/${LIB}.shlib
+                    ${CMD}
+                fi
+            done
+        fi
+}
