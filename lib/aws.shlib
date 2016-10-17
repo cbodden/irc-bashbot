@@ -17,17 +17,19 @@ function .aws()
                     --output text \
                     --query 'Reservations[*].Instances[*].[InstanceId,KeyName,InstanceType,State.Name]' \
                     > ${TMP_FILE1}
-                _chan_text_out
+                _chan_text_out col
             else
                 SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
             fi
             ;;
         "help")
-            SEND "PRIVMSG ${CHANNEL} Available AWS commands:"
-            SEND "PRIVMSG ${CHANNEL} =-=-=-=-=-=-=-=-=-=-=-="
-            SEND "PRIVMSG ${CHANNEL} instances - this will list your instances"
-            SEND "PRIVMSG ${CHANNEL} volumes   - this will list your volumes"
-            SEND "PRIVMSG ${CHANNEL}  "
+            printf "%s\n" \
+            "Available AWS commands:" \
+            "=-=-=-=-=-=-=-=-=-=-=-=" \
+            "instances - this will list your instances" \
+            "volumes   - this will list your volumes" \
+            | tee ${TMP_FILE1} > /dev/null
+            _chan_text_out
             ;;
         "volumes")
             if [[ "${NAME}" == "${OWNER}" ]]
@@ -36,7 +38,7 @@ function .aws()
                     --output text \
                     --query 'Volumes[*].[VolumeId,Attachments[0].InstanceId,Size]' \
                     > ${TMP_FILE1}
-                _chan_text_out
+                _chan_text_out col
             else
                 SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
             fi
