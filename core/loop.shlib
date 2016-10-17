@@ -45,6 +45,7 @@ function loop()
                 continue
                 ;;
         esac
+
         source core/privmsg_chan_all.shlib
         privmsg_chan_all
         continue
