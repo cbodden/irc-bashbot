@@ -11,7 +11,7 @@ git clone git@github.com:cbodden/irc-bashbot.git
 cd irc-bashbot
 mv config/sample-irc_bashbot.config config/irc_bashbot.config
 vi config/irc_bashbot.config
-./irc-bashbot.sh &
+./irc-bashbot.sh
 ```
 
 Base usage explained:
