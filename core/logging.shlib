@@ -13,8 +13,10 @@ function logging()
     if [[ -L "current.log" ]]
     then
         rm current.log
+        find ${_LOGPATH}* -mtime +7 -exec rm {} \;
         ln -s ${LOG} current.log
     else
+        find ${_LOGPATH}* -mtime +7 -exec rm {} \;
         ln -s ${LOG} current.log
     fi
 }
