@@ -23,13 +23,16 @@ function .links()
     if [[ ${#_ARG[@]} -ge 1 ]]
     then
         case "${_ARG[0]}" in
-            'count')
+            'count'|'c')
                 if [[ -f ${LINKFILE} ]]
                 then
                     printf "%s\n" \
                         "links saved:" \
-                        "$(wc -l ${LINKFILE} | awk '{print $1}')" \
-                        "$(awk '{print $1}' ${LINKFILE} | sort | uniq -c)" \
+                        "$(wc -l ${LINKFILE} \
+                        | awk '{print $1}')" \
+                        "$(awk '{print $1}' ${LINKFILE} \
+                        | sort \
+                        | uniq -c)" \
                         | tee -a ${TMP_FILE1} > /dev/null
                 else
                     printf "%s\n" \
@@ -39,71 +42,75 @@ function .links()
                 source core/chan_text_out.shlib
                 _chan_text_out
                 ;;
-            'find')
+            'find'|'f')
                 if [[ -n "${_ARG[1]}" ]]
                 then
                     awk '$3 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
                         | sed 's/http:\/\///' \
                         | tee -a ${TMP_FILE1} > /dev/null
-                fi
-                source core/chan_text_out.shlib
-                _chan_text_out
-                ;;
-            'save')
-                if [[ -n "${_ARG[1]}" ]]
-                then
-                    if [[ $(curl -Is ${_ARG[1]} | head -1) == "HTTP/1.1"* ]]
-                    then
-                        printf "%s\n" \
-                            "${NAME} : ${_ARG[1]}" \
-                            | tee -a ${LINKFILE} > /dev/null
-                        printf "%s\n" \
-                            "Saved your link ${NAME}" \
-                            | tee -a ${TMP_FILE1} > /dev/null
-                    else
-                        printf "%s\n" \
-                            "Link does not seem to work against my tests:" \
-                            "curl -Is ${_ARG[1]} | head -1" \
-                            | tee -a ${TMP_FILE1} > /dev/null
-                    fi
-                    source core/chan_text_out.shlib
-                    _chan_text_out
                 else
                     printf "%s\n" \
-                        "No link provided" \
-                        | tee -a ${TMP_FILE1} > /dev/null
-                    source core/chan_text_out.shlib
-                    _chan_text_out
-                fi
-                ;;
-            'show')
-                if [[ ! -n "${_ARG[1]}" ]]
-                then
-                    tail -n 10 ${LINKFILE} \
-                        | awk '{print $3}' \
-                        | sed 's/http:\/\///' \
-                        | tee -a ${TMP_FILE1} > /dev/null
-                else
-                    grep "^${_ARG[1]}" ${LINKFILE} \
-                        | tail -n 10 \
-                        | awk '{print $3}' \
-                        | sed 's/http:\/\///' \
+                        "No word specified" \
                         | tee -a ${TMP_FILE1} > /dev/null
                 fi
                 source core/chan_text_out.shlib
                 _chan_text_out
                 ;;
-            *)
+            'save'|'sa'|'sv')
+                if [[ -n "${_ARG[1]}" ]]
+                then
+                    if [[ $(curl -Is ${_ARG[1]} \
+                        | head -1) == "HTTP/1.1"* ]]
+                then
+                    printf "%s\n" \
+                        "${NAME} : ${_ARG[1]}" \
+                        | tee -a ${LINKFILE} > /dev/null
+                    printf "%s\n" \
+                        "Saved your link ${NAME}" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                else
+                    printf "%s\n" \
+                        "Link does not seem to work against my tests:" \
+                        "curl -Is ${_ARG[1]} | head -1" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                fi
+                source core/chan_text_out.shlib
+                _chan_text_out
+            else
                 printf "%s\n" \
-                    "count       : total links saved" \
-                    "find <word> : find links by word" \
-                    "save <link> : saves link to file by nick" \
-                    "show        : this shows the last 10 amount of links" \
-                    "show <nick> : same as above but by nick" \
+                    "No link provided" \
                     | tee -a ${TMP_FILE1} > /dev/null
                 source core/chan_text_out.shlib
                 _chan_text_out
-                ;;
-        esac
-    fi
+            fi
+            ;;
+        'show'|'sh')
+            if [[ ! -n "${_ARG[1]}" ]]
+            then
+                tail -n 10 ${LINKFILE} \
+                    | awk '{print $3}' \
+                    | sed 's/http:\/\///' \
+                    | tee -a ${TMP_FILE1} > /dev/null
+            else
+                awk '$1 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
+                    | tail -n 10 \
+                    | sed 's/http:\/\///' \
+                    | tee -a ${TMP_FILE1} > /dev/null
+            fi
+            source core/chan_text_out.shlib
+            _chan_text_out
+            ;;
+        *)
+            printf "%s\n" \
+                "[c]ount       : total links saved" \
+                "[f]ind <word> : find links by word" \
+                "[sa]ve <link> : saves link to file by nick" \
+                "[sh]ow        : this shows the last 10 amount of links" \
+                "[sh]ow <nick> : same as above but by nick" \
+                | tee -a ${TMP_FILE1} > /dev/null
+            source core/chan_text_out.shlib
+            _chan_text_out
+            ;;
+    esac
+fi
 }
