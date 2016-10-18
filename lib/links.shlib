@@ -2,7 +2,7 @@
 function .links()
 {
     _LINKPATH="misc/"
-    _LINKFILE="${PROGNAME}_links.link"
+    _LINKFILE="${PROGNAME}.links"
     LINKFILE="${_LINKPATH}${_LINKFILE}"
 
     if [[ -n "${ARG}" ]]
@@ -52,7 +52,7 @@ function .links()
                     then
                         printf "%s\n" \
                             "${NAME} : ${_ARG[1]}" \
-                            | tee ${LINKFILE} > /dev/null
+                            | tee -a ${LINKFILE} > /dev/null
                         printf "%s\n" \
                             "Saved your link ${NAME}" \
                             | tee ${TMP_FILE1} > /dev/null
