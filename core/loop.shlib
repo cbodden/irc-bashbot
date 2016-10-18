@@ -2,7 +2,6 @@ function loop()
 {
     while read -r LINE
     do
-        # strip trailing carriage return
         LINE=${LINE%%$'\r'}
 
         RECV "$LINE"
@@ -10,7 +9,6 @@ function loop()
 
         case "$1" in
             :*)
-                # turn: :nickname!example.host.com into: nickname
                 NAME=${1%%!*}
                 NAME=${NAME#:}
                 shift
