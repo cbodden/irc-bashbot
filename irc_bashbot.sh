@@ -29,8 +29,8 @@ _TMPPID="$$"
 case $(ps -o stat= -p $$) in
     *+*)
         ## if running in foreground
-        exec $0 & disown $!
-        kill -9 ${_TMPPID} 2>&1
+        #exec $0 & disown $!
+        #kill -9 ${_TMPPID} 2>&1
         ;;
     *)
         ## if running in background

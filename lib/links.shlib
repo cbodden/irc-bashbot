@@ -1,0 +1,92 @@
+# help text - links storage and display
+function .links()
+{
+    _LINKPATH="misc/"
+    _LINKFILE="${PROGNAME}_links.link"
+    LINKFILE="${_LINKPATH}${_LINKFILE}"
+
+    if [[ -n "${ARG}" ]]
+    then
+        read -r -a _ARG <<< "${ARG}"
+    else
+        local _ARG=""
+    fi
+
+    if [[ ! -d "${_LINKPATH}" ]]
+    then
+        mkdir ${_LINKPATH}
+    fi
+
+    local _CNT=0
+    if [[ ${#_ARG[@]} -ge 1 ]]
+    then
+        case "${_ARG[0]}" in
+            'count')
+                if [[ -f ${LINKFILE} ]]
+                then
+                    printf "%s\n" \
+                        "links saved:" \
+                        "$(wc -l ${LINKFILE} | awk '{print $1}')" \
+                        | tee ${TMP_FILE1} > /dev/null
+                else
+                    printf "%s\n" \
+                        "Link file does not exist." \
+                        | tee ${TMP_FILE1} > /dev/null
+                fi
+                source core/chan_text_out.shlib
+                _chan_text_out
+                ;;
+            'find')
+                if [[ -n "${_ARG[1]}" ]]
+                then
+                    awk '$3 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
+                        | tee ${TMP_FILE1} > /dev/null
+                fi
+                source core/chan_text_out.shlib
+                _chan_text_out
+                ;;
+            'save')
+                if [[ -n "${_ARG[1]}" ]]
+                then
+                    if [[ $(curl -Is ${_ARG[1]} | head -1) == "HTTP/1.1"* ]]
+                    then
+                        printf "%s\n" \
+                            "${NAME} : ${_ARG[1]}" \
+                            | tee ${LINKFILE} > /dev/null
+                        printf "%s\n" \
+                            "Saved your link ${NAME}" \
+                            | tee ${TMP_FILE1} > /dev/null
+                    else
+                        printf "%s\n" \
+                            "Link does not seem to work against my tests:" \
+                            "curl -Is ${_ARG[1]} | head -1" \
+                            | tee ${TMP_FILE1} > /dev/null
+                    fi
+                    source core/chan_text_out.shlib
+                    _chan_text_out
+                else
+                    printf "%s\n" \
+                        "No link provided" \
+                        | tee ${TMP_FILE1} > /dev/null
+                    source core/chan_text_out.shlib
+                    _chan_text_out
+                fi
+                ;;
+            'show')
+                grep '^<nick>' <"${LINKFILE}" \
+                    | tee ${TMP_FILE1} > /dev/null
+                ;;
+            *)
+                printf "%s\n" \
+                    "count       : total links saved" \
+                    "find <word> : find links by word" \
+                    "save <link> : saves link to file by nick" \
+                    "show        : this shows the last x amount of links" \
+                    "show <nick> : same as above but by nick" \
+                    | tee ${TMP_FILE1} > /dev/null
+                source core/chan_text_out.shlib
+                _chan_text_out
+                ;;
+        esac
+    fi
+}
