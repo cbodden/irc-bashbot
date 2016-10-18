@@ -1,0 +1,13 @@
+# help text - var test
+function .var_test()
+{
+    printf "%s\n" \
+        "CHANNEL: ${CHANNEL}" \
+        "CMD    : ${CMD}" \
+        "ARG    : ${ARG}" \
+        "NAME   : ${NAME}" \
+        "NICK   : ${NICK}" \
+        | tee ${TMP_FILE1} > /dev/null
+    source core/chan_text_out.shlib
+    _chan_text_out
+}
