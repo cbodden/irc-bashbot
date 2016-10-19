@@ -1,9 +1,9 @@
 # help text - links storage and display
 function .links()
 {
-    _LINKPATH="misc/"
-    _LINKFILE="${PROGNAME%.*}.links"
-    LINKFILE="${_LINKPATH}${_LINKFILE}"
+    local _LINKPATH="misc/"
+    local _LINKFILE="${PROGNAME%.*}.links"
+    local LINKFILE="${_LINKPATH}${_LINKFILE}"
 
     if [[ -n "${ARG}" ]]
     then
