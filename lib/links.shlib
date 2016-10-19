@@ -100,8 +100,8 @@ function .links()
             ;;
         *)
             printf "%s\n" \
-                "[c]ount       : total links saved" \
-                "[f]ind <word> : find links by word" \
+                "[co]unt       : total links saved" \
+                "[fi]nd <word> : find links by word" \
                 "[sa]ve <link> : saves link to file by nick" \
                 "[sh]ow        : this shows the last 10 added links" \
                 "[sh]ow <nick> : same as above but by nick" \
