@@ -47,7 +47,6 @@ function .links()
                 if [[ -n "${_ARG[1]}" ]]
                 then
                     awk '$3 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
-                        | sed 's/http:\/\///' \
                         | tee -a ${TMP_FILE1} > /dev/null
                 else
                     printf "%s\n" \
@@ -90,12 +89,10 @@ function .links()
             then
                 tail -n 10 ${LINKFILE} \
                     | awk '{print $3}' \
-                    | sed 's/http:\/\///' \
                     | tee -a ${TMP_FILE1} > /dev/null
             else
                 awk '$1 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
                     | tail -n 10 \
-                    | sed 's/http:\/\///' \
                     | tee -a ${TMP_FILE1} > /dev/null
             fi
             source core/chan_text_out.shlib
