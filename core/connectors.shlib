@@ -5,11 +5,13 @@ function connectors()
 
     SEND "NICK ${NICK}"
     SEND "USER ${NICK} 0 * :${NICK}"
-    SEND "JOIN ${CHAN} ${CHAN_KEY}"
 
     if [[ ! -z ${NICKSERV_PW} ]]
     then
         sleep 20
         SEND "PRIVMSG nickserv :identify ${NICKSERV_PW}"
+        SEND "JOIN ${CHAN} ${CHAN_KEY}"
+    else
+        SEND "JOIN ${CHAN} ${CHAN_KEY}"
     fi
 }
