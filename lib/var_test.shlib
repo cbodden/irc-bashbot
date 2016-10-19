@@ -1,6 +1,8 @@
 # help text - var test
 function .var_test()
 {
+    >${TMP_FILE1}
+
     printf "%s\n" \
         "CHANNEL: ${CHANNEL}" \
         "CMD    : ${CMD}" \
@@ -8,7 +10,7 @@ function .var_test()
         "NAME   : ${NAME}" \
         "NICK   : ${NICK}" \
         "FUNC   : ${FUNCNAME[*]}" \
-        | tee ${TMP_FILE1} > /dev/null
+        | tee -a ${TMP_FILE1} > /dev/null
     source core/chan_text_out.shlib
     _chan_text_out
 }
