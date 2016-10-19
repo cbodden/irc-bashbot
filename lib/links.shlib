@@ -23,7 +23,7 @@ function .links()
     if [[ ${#_ARG[@]} -ge 1 ]]
     then
         case "${_ARG[0]}" in
-            'count'|'c')
+            'count'|'co'|'c')
                 if [[ -f ${LINKFILE} ]]
                 then
                     printf "%s\n" \
@@ -43,7 +43,7 @@ function .links()
                 source core/chan_text_out.shlib
                 _chan_text_out
                 ;;
-            'find'|'f')
+            'find'|'fi'|'f')
                 if [[ -n "${_ARG[1]}" ]]
                 then
                     awk '$3 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
