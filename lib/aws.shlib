@@ -1,6 +1,8 @@
 # help text - this command shows some aws information
 function .aws()
 {
+    >${TMP_FILE1}
+
     source core/chan_text_out.shlib
     if [[ ! -z "${ARG}" ]]
     then

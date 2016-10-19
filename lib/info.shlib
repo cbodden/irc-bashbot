@@ -1,13 +1,15 @@
 # help text - this shows git info
 function .info()
 {
+    >${TMP_FILE1}
+
     printf "%s\n" \
         "${PROGNAME%.*} is an irc bot written in bash." \
         "source can be found at : " \
         "    $(git config --get remote.origin.url)" \
         "currently at commit : " \
         "    $(git rev-parse HEAD)" \
-        | tee ${TMP_FILE1} > /dev/null
+        | tee -a ${TMP_FILE1} > /dev/null
     source core/chan_text_out.shlib
     _chan_text_out
 }
