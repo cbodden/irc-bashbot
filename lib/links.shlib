@@ -1,5 +1,4 @@
 # help text - links storage and display
-alias '.l'='.links'
 function .links()
 {
     _LINKPATH="misc/"
