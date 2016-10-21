@@ -1,6 +1,10 @@
 # help text - this command shows random facts
 function .facts()
 {
+    >${TMP_FILE1}
+
+    source core/chan_text_out.shlib
+
     if [[ -x $(which elinks 2>&1) ]]
     then
         local _FACT=$(elinks -dump randomfunfacts.com \
@@ -15,13 +19,20 @@ function .facts()
             do
                 local _OUT=$(echo -e "${_FACT}" \
                     | sed -n ${_CNT}p)
-                SEND "PRIVMSG ${CHANNEL} ${_OUT}"
+                printf "%s\n" \
+                    "${_OUT}" \
+                    | tee -a ${TMP_FILE1} > /dev/null
                 let _CNT=_CNT+1
             done
         else
-            SEND "PRIVMSG ${CHANNEL} ${_FACT}"
+            printf "%s\n" \
+                "${_FACT}" \
+                | tee -a ${TMP_FILE1} > /dev/null
         fi
     else
-        SEND "PRIVMSG ${CHANNEL} elinks is not installed"
+        printf "%s\n" \
+            "elinks is not installed" \
+            | tee -a ${TMP_FILE1} > /dev/null
     fi
+    _chan_text_out
 }
