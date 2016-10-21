@@ -18,4 +18,6 @@ function privmsg_chan_all()
                 fi
             done
         fi
-}
+        source filters/filters.shlib
+        _filters
+    }
