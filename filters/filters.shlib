@@ -2,6 +2,7 @@ _filters()
 {
     > ${TMP_FILE1}
 
+    _FILTER=()
     _FILTER+=(${CMD})
     _FILTER+=(${ARG})
 
@@ -16,7 +17,6 @@ _filters()
         fi
         let _CNT=_CNT+1
     done
-    _FILTER=()
     source core/chan_text_out.shlib
     _chan_text_out
 }
