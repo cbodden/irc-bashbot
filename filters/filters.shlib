@@ -6,17 +6,35 @@ _filters()
     _FILTER+=(${CMD})
     _FILTER+=(${ARG})
 
-    local _CNT=0
-    while [[ "${_CNT}" -lt "${#_FILTER[@]}" ]]
-    do
-        if [[ "${_FILTER[${_CNT}]}" == "word" ]]
-        then
-            printf "%s\n" \
-                "working" \
-                | tee -a ${TMP_FILE1} > /dev/null
-        fi
-        let _CNT=_CNT+1
-    done
-    source core/chan_text_out.shlib
-    _chan_text_out
-}
+##    _WORD=()
+##    declare -a _WORD=($(\
+##        for _WORDS in words/*
+##        do
+##            _WORDS=${_WORDS##*/}
+##            _WORDS=${_WORDS%.*}
+##            echo ${_WORDS}
+##        done))
+
+        local _CNT=0
+        while [[ "${_CNT}" -lt "${#_FILTER[@]}" ]]
+        do
+            _WORD=$(echo -e "${_FILTER[${_CNT}]}" \
+                | tr -d '[[:space:]]')
+            case ${_WORD} in
+             # case ${_FILTER[@]} in
+                'one')
+                    echo "test is working"
+                    ;;
+
+                'test'|'Test'|'TEST')
+                    source ${PROGDIR}/filters/words/test.shlib
+                    word_test
+                    ;;
+                *)
+                    ;;
+            esac
+            let _CNT=_CNT+1
+        done
+        source core/chan_text_out.shlib
+        _chan_text_out
+    }

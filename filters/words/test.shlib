@@ -1,0 +1,8 @@
+word_test()
+{
+    > ${TMP_FILE1}
+
+    printf "%s\n" \
+        "testing word test" \
+        | tee -a ${TMP_FILE1} > /dev/null
+}
