@@ -3,6 +3,8 @@ word_test()
     > ${TMP_FILE1}
 
     printf "%s\n" \
-        "testing word test" \
+        "matching word: ${_WORD}" \
         | tee -a ${TMP_FILE1} > /dev/null
+    source ${PROGDIR}/core/chan_text_out.shlib
+    _chan_text_out
 }
