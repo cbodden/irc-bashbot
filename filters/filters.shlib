@@ -6,6 +6,10 @@ _filters()
     _FILTER+=(${CMD})
     _FILTER+=(${ARG})
 
+
+    _REGEX1="(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
+    _REGEX2="[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
+
     local _CNT=0
     while [[ "${_CNT}" -lt "${#_FILTER[@]}" ]]
     do
@@ -26,6 +30,27 @@ _filters()
             *)
                 ;;
         esac
-        let _CNT=_CNT+1
-    done
+
+        if [[ ${_WORD} =~ ${REGEX1} ]] || [[ ${_WORD} =~ ${REGEX2} ]]
+        then
+            if [[ $(curl -Is ${_WORD} \
+                | head -1) == "HTTP/1.1"* ]]
+            then
+                local _DESC=$(curl -s ${_WORD} \
+                    | grep -o "<title>[^<]*" \
+                    | cut -c 8-)
+                if [[ -z ${_DESC} ]]
+                then
+                    _DESC="No Desc"
+                fi
+                printf "%s\n" \
+                    "URL : ${_WORD}  ${_DESC:+"No Desc"}" \
+                    | tee -a ${TMP_FILE1} > /dev/null
+                source ${PROGDIR}/core/chan_text_out.shlib
+                _chan_text_out
+            fi
+        fi
+
+    let _CNT=_CNT+1
+done
 }
