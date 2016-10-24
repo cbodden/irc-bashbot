@@ -36,6 +36,11 @@ _filters()
             if [[ $(curl -Is ${_WORD} \
                 | head -1) == "HTTP/1.1"* ]]
             then
+                if [[ ${_WORD} != *"."* ]]
+                then
+                    break 1
+                fi
+
                 local _DESC=$(curl -s ${_WORD} \
                     | grep -o "<title>[^<]*" \
                     | cut -c 8-)
