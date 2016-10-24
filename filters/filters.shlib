@@ -6,9 +6,9 @@ _filters()
     _FILTER+=(${CMD})
     _FILTER+=(${ARG})
 
-
-    _REGEX1="(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
-    _REGEX2="[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
+    local _REGEX1="(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
+    local _REGEX2="[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
+    local _LINKFILE="${PROGDIR}/misc/${PROGNAME%.*}.links"
 
     local _CNT=0
     while [[ "${_CNT}" -lt "${#_FILTER[@]}" ]]
@@ -39,18 +39,30 @@ _filters()
                 local _DESC=$(curl -s ${_WORD} \
                     | grep -o "<title>[^<]*" \
                     | cut -c 8-)
+
                 if [[ -z ${_DESC} ]]
                 then
                     _DESC="No Desc"
                 fi
+
+                if grep -Fq ${_WORD} ${_LINKFILE}
+                then
+                    true
+                else
+                    printf "%s\n" \
+                        "${NAME} : ${_WORD}" \
+                        | tee -a ${_LINKFILE} > /dev/null
+                fi
+
                 printf "%s\n" \
                     "URL : ${_WORD}  ${_DESC:+"No Desc"}" \
                     | tee -a ${TMP_FILE1} > /dev/null
+
                 source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
             fi
         fi
 
-    let _CNT=_CNT+1
-done
+        let _CNT=_CNT+1
+    done
 }
