@@ -13,7 +13,7 @@ function privmsg_chan_all()
             do
                 if [[ ".${LIB}" == "${CMD}" ]]
                 then
-                    source lib/${LIB}.shlib
+                    source ${PROGDIR}/lib/${LIB}.shlib
                     ${CMD}
                 fi
             done
