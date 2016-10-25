@@ -21,6 +21,6 @@ function .help()
                 | tee -a ${TMP_FILE1} > /dev/null
             let _OCNT=_OCNT+1
         done
-        source core/chan_text_out.shlib
+        source ${PROGDIR}/core/chan_text_out.shlib
         _chan_text_out
 }
