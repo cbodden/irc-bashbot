@@ -10,6 +10,6 @@ function .info()
         "currently at commit : " \
         "    $(git rev-parse HEAD)" \
         | tee -a ${TMP_FILE1} > /dev/null
-    source core/chan_text_out.shlib
+    source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
 }
