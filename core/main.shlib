@@ -20,7 +20,7 @@ function main()
     fi
 
     trap 'rm -rf ${TMP_FILE1} ${TMP_FILE2} ${PIDFILE}' EXIT
-    trap 'source lib/reload.shlib ; .reload' SIGHUP
+    trap 'source ${PROGDIR}/lib/reload.shlib ; .reload' SIGHUP
 
     TMP_FILE1=$(mktemp --tmpdir ${PROGNAME}.$$.XXXXXXXXXX)
     TMP_FILE2=$(mktemp --tmpdir ${PROGNAME}.$$.XXXXXXXXXX)
