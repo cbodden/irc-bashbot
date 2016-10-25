@@ -6,8 +6,7 @@ _filters()
     _FILTER+=(${CMD})
     _FILTER+=(${ARG})
 
-    local _REGEX1="(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
-    local _REGEX2="[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
+    local _REGEX="((https?)://)?[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
     local _LINKFILE="${PROGDIR}/misc/${PROGNAME%.*}.links"
 
     local _CNT=0
@@ -31,7 +30,7 @@ _filters()
                 ;;
         esac
 
-        if [[ ${_WORD} =~ ${REGEX1} || ${_WORD} =~ ${REGEX2} ]]
+        if [[ ${_WORD} =~ ${REGEX} ]]
         then
             if [[ $(curl -Is ${_WORD} \
                 | head -1) == "HTTP/1.1"* ]]
