@@ -40,7 +40,7 @@ function .links()
                         "Link file does not exist." \
                         | tee -a ${TMP_FILE1} > /dev/null
                 fi
-                source core/chan_text_out.shlib
+                source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
                 ;;
             'find'|'fi'|'f')
@@ -53,7 +53,7 @@ function .links()
                         "No word specified" \
                         | tee -a ${TMP_FILE1} > /dev/null
                 fi
-                source core/chan_text_out.shlib
+                source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
                 ;;
             'save'|'sa'|'sv')
@@ -74,13 +74,13 @@ function .links()
                         "curl -Is ${_ARG[1]} | head -1" \
                         | tee -a ${TMP_FILE1} > /dev/null
                 fi
-                source core/chan_text_out.shlib
+                source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
             else
                 printf "%s\n" \
                     "No link provided" \
                     | tee -a ${TMP_FILE1} > /dev/null
-                source core/chan_text_out.shlib
+                source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
             fi
             ;;
@@ -95,7 +95,7 @@ function .links()
                     | tail -n 10 \
                     | tee -a ${TMP_FILE1} > /dev/null
             fi
-            source core/chan_text_out.shlib
+            source ${PROGDIR}/core/chan_text_out.shlib
             _chan_text_out
             ;;
         *)
@@ -106,7 +106,7 @@ function .links()
                 "[sh]ow        : this shows the last 10 added links" \
                 "[sh]ow <nick> : same as above but by nick" \
                 | tee -a ${TMP_FILE1} > /dev/null
-            source core/chan_text_out.shlib
+            source ${PROGDIR}/core/chan_text_out.shlib
             _chan_text_out
             ;;
     esac
