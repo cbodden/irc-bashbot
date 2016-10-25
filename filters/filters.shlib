@@ -31,12 +31,12 @@ _filters()
                 ;;
         esac
 
-        if [[ ${_WORD} =~ ${REGEX1} ]] || [[ ${_WORD} =~ ${REGEX2} ]]
+        if [[ ${_WORD} =~ ${REGEX1} || ${_WORD} =~ ${REGEX2} ]]
         then
             if [[ $(curl -Is ${_WORD} \
                 | head -1) == "HTTP/1.1"* ]]
             then
-                if [[ ${_WORD} != *"."* ]]
+                if [[ ${_WORD} != *.* || ${_WORD} == *. ]]
                 then
                     break 1
                 fi
@@ -44,11 +44,6 @@ _filters()
                 local _DESC=$(curl -s ${_WORD} \
                     | grep -o "<title>[^<]*" \
                     | cut -c 8-)
-
-                if [[ -z ${_DESC} ]]
-                then
-                    _DESC="No Desc"
-                fi
 
                 if grep -Fq ${_WORD} ${_LINKFILE}
                 then
@@ -60,7 +55,8 @@ _filters()
                 fi
 
                 printf "%s\n" \
-                    "URL : ${_WORD}  ${_DESC:+"No Desc"}" \
+                    "URL   : ${_WORD}" \
+                    "Title : ${_DESC}" \
                     | tee -a ${TMP_FILE1} > /dev/null
 
                 source ${PROGDIR}/core/chan_text_out.shlib
