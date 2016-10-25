@@ -40,11 +40,23 @@ _filters()
                     break 1
                 fi
 
+                if [[ $(curl -Is ${_WORD} \
+                    | head -1) == "HTTP/1.1 301 Moved"* ]]
+                then
+                    _WORD=$(curl -Is ${_WORD} \
+                        | awk '/Location/ {print $2}' \
+                        | sed 's/http:\/\///g')
+                    _WORD=${_WORD%/*}
+                fi
+
                 local _DESC=$(curl -s ${_WORD} \
                     | grep -o "<title>[^<]*" \
                     | cut -c 8-)
 
-                if grep -Fq ${_WORD} ${_LINKFILE}
+                local _LINK_GR=${_WORD#*http://}
+                _LINK_GR=${_LINK_GR#*www.}
+
+                if grep -Fq ${_LINK_GR} ${_LINKFILE}
                 then
                     true
                 else
