@@ -4,6 +4,6 @@ function .whois()
     printf "%s\n" \
         "Owner is : ${OWNER} " \
         | tee ${TMP_FILE1} > /dev/null
-    source core/chan_text_out.shlib
+    source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
 }
