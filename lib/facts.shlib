@@ -3,7 +3,7 @@ function .facts()
 {
     >${TMP_FILE1}
 
-    source core/chan_text_out.shlib
+    source ${PROGDIR}/core/chan_text_out.shlib
 
     if [[ -x $(which elinks 2>&1) ]]
     then
