@@ -47,7 +47,7 @@ function loop()
         esac
         if [[ "${_LOOP}" == "ENABLE" ]]
         then
-            source core/privmsg_chan_all.shlib
+            source ${PROGDIR}/core/privmsg_chan_all.shlib
             privmsg_chan_all
         fi
         continue
