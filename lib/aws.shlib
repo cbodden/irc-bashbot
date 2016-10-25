@@ -3,7 +3,7 @@ function .aws()
 {
     >${TMP_FILE1}
 
-    source core/chan_text_out.shlib
+    source ${PROGDIR}/core/chan_text_out.shlib
     if [[ ! -z "${ARG}" ]]
     then
         local _AWS_OPT=${ARG}
@@ -11,7 +11,7 @@ function .aws()
         local _AWS_OPT=help
     fi
 
-    source core/chan_text_out.shlib
+    source ${PROGDIR}/core/chan_text_out.shlib
 
     case "${_AWS_OPT}" in
         "iam"|"ia")
