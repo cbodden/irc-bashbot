@@ -9,6 +9,10 @@ function .info()
         "    $(git config --get remote.origin.url)" \
         "currently at commit : " \
         "    $(git rev-parse HEAD)" \
+        "lines committed : " \
+        "    $(git ls-files \
+            | xargs wc -l \
+            | tail -1)" \
         | tee -a ${TMP_FILE1} > /dev/null
     source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
