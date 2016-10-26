@@ -2,8 +2,6 @@
 function .cocktails()
 {
     >${TMP_FILE1}
-
-
     curl -qs http://www.barnonedrinks.com/drinks/random/ \
         | grep -A 1 "<dt>" \
         | sed \
