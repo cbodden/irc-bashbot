@@ -5,15 +5,17 @@ function .info()
     printf "%s\n" \
         "${PROGNAME%.*} is an irc bot written in bash." \
         "source can be found at : " \
-        "    $(git config --get remote.origin.url)" \
+        "  $(git config --get remote.origin.url)" \
         "currently at commit : " \
-        "    $(git rev-parse HEAD)" \
+        "  $(git rev-parse HEAD)" \
+        "total number of commits : " \
+        "  $(git rev-list --all --count)" \
         "lines committed : " \
-        "    $(git ls-files \
+        " $(git ls-files \
             | xargs wc -l \
             | tail -1)" \
         "owner is : " \
-        "    ${OWNER}" \
+        "  ${OWNER}" \
         | tee -a ${TMP_FILE1} > /dev/null
     source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
