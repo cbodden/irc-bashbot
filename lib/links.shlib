@@ -1,6 +1,8 @@
 # help text - links storage and display
 function .links()
 {
+    >${TMP_FILE1}
+
     local _LINKPATH="misc/"
     local _LINKFILE="${PROGNAME%.*}.links"
     local LINKFILE="${_LINKPATH}${_LINKFILE}"
@@ -16,8 +18,6 @@ function .links()
     then
         mkdir ${_LINKPATH}
     fi
-
-    >${TMP_FILE1}
 
     local _CNT=0
     if [[ ${#_ARG[@]} -ge 1 ]]
