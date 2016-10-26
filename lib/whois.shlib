@@ -1,9 +1,0 @@
-# help text - this shows user info
-function .whois()
-{
-    printf "%s\n" \
-        "Owner is : ${OWNER} " \
-        | tee ${TMP_FILE1} > /dev/null
-    source ${PROGDIR}/core/chan_text_out.shlib
-    _chan_text_out
-}
