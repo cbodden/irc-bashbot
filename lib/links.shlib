@@ -97,9 +97,18 @@ function .links()
                             | awk '{print $3}' \
                             | tee -a ${TMP_FILE1} > /dev/null
                     else
-                        awk '$1 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
-                            | tail -n 10 \
-                            | tee -a ${TMP_FILE1} > /dev/null
+                        if [ "${_ARG[2]}" -eq "${_ARG[2]}" ] 2>/dev/null
+                        then
+                            awk '$1 ~ /'${_ARG[1]}'/ {print $3}' \
+                                <"${LINKFILE}" \
+                                | tail -n ${_ARG[2]} \
+                                | tee -a ${TMP_FILE1} > /dev/null
+                        else
+                            awk '$1 ~ /'${_ARG[1]}'/ {print $3}' \
+                                <"${LINKFILE}" \
+                                | tail -n 10 \
+                                | tee -a ${TMP_FILE1} > /dev/null
+                        fi
                     fi
                 fi
                 source ${PROGDIR}/core/chan_text_out.shlib
