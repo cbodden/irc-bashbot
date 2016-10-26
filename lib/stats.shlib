@@ -1,6 +1,7 @@
 # help text - give bot stats
 function .stats()
 {
+    >${TMP_FILE1}
     local CH_TIME=$(date +"%s")
     local R_TIME=$((CH_TIME-ST_TIME))
     local _DAYS=$(printf "%02d" $((R_TIME / 86400)))
@@ -14,7 +15,7 @@ function .stats()
         "Process ID  : $(< ${PIDFILE})" \
         "Log file    : ${_LOGFILE}" \
         "Memory used : ${MEM_USE#*:}" \
-        | tee ${TMP_FILE1} > /dev/null
+        | tee -a ${TMP_FILE1} > /dev/null
     source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
 }
