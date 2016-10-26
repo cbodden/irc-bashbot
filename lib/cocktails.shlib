@@ -10,7 +10,7 @@ function .cocktails()
         | sed \
         -e 's/<[^>]*>//g' \
         -e 's/^[ \t]*//' \
-        -e '1~2s/^/>/' \
+        -e '2~2s/^/  /' \
         | tee -a ${TMP_FILE1} > /dev/null
 
     _chan_text_out
