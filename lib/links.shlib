@@ -61,60 +61,61 @@ function .links()
                 then
                     if [[ $(curl -Is ${_ARG[1]} \
                         | head -1) == "HTTP/1.1"* ]]
-                then
-                    printf "%s\n" \
-                        "${NAME} : ${_ARG[1]}" \
-                        | tee -a ${LINKFILE} > /dev/null
-                    printf "%s\n" \
-                        "Saved your link ${NAME}" \
-                        | tee -a ${TMP_FILE1} > /dev/null
+                    then
+                        printf "%s\n" \
+                            "${NAME} : ${_ARG[1]}" \
+                            | tee -a ${LINKFILE} > /dev/null
+                        printf "%s\n" \
+                            "Saved your link ${NAME}" \
+                            | tee -a ${TMP_FILE1} > /dev/null
+                    else
+                        printf "%s\n" \
+                            "Link does not seem to work against my tests:" \
+                            "curl -Is ${_ARG[1]} | head -1" \
+                            | tee -a ${TMP_FILE1} > /dev/null
+                    fi
+                    source ${PROGDIR}/core/chan_text_out.shlib
+                    _chan_text_out
                 else
                     printf "%s\n" \
-                        "Link does not seem to work against my tests:" \
-                        "curl -Is ${_ARG[1]} | head -1" \
+                        "No link provided" \
                         | tee -a ${TMP_FILE1} > /dev/null
+                    source ${PROGDIR}/core/chan_text_out.shlib
+                    _chan_text_out
                 fi
-                source ${PROGDIR}/core/chan_text_out.shlib
-                _chan_text_out
-            else
-                printf "%s\n" \
-                    "No link provided" \
-                    | tee -a ${TMP_FILE1} > /dev/null
-                source ${PROGDIR}/core/chan_text_out.shlib
-                _chan_text_out
-            fi
             ;;
-        'show'|'sh')
-            if [[ ! -n "${_ARG[1]}" ]]
-            then
-                tail -n 10 ${LINKFILE} \
-                    | awk '{print $3}' \
-                    | tee -a ${TMP_FILE1} > /dev/null
-            else
-                if [ "${_ARG[1]}" -eq "${_ARG[1]}" ] 2>/dev/null
+            'show'|'sh')
+                if [[ ! -n "${_ARG[1]}" ]]
                 then
-                    tail -n ${_ARG[1]} ${LINKFILE} \
+                    tail -n 10 ${LINKFILE} \
                         | awk '{print $3}' \
                         | tee -a ${TMP_FILE1} > /dev/null
                 else
-                    awk '$1 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
-                        | tail -n 10 \
-                        | tee -a ${TMP_FILE1} > /dev/null
+                    if [ "${_ARG[1]}" -eq "${_ARG[1]}" ] 2>/dev/null
+                    then
+                        tail -n ${_ARG[1]} ${LINKFILE} \
+                            | awk '{print $3}' \
+                            | tee -a ${TMP_FILE1} > /dev/null
+                    else
+                        awk '$1 ~ /'${_ARG[1]}'/ {print $3}' <"${LINKFILE}" \
+                            | tail -n 10 \
+                            | tee -a ${TMP_FILE1} > /dev/null
+                    fi
                 fi
-            fi
-            source ${PROGDIR}/core/chan_text_out.shlib
-            _chan_text_out
+                source ${PROGDIR}/core/chan_text_out.shlib
+                _chan_text_out
             ;;
-        *)
-            printf "%s\n" \
-                "[co]unt       : total links saved" \
-                "[fi]nd <word> : find links by word" \
-                "[sa]ve <link> : saves link to file by nick" \
-                "[sh]ow        : this shows the last 10 added links" \
-                "[sh]ow <nick> : same as above but by nick" \
-                | tee -a ${TMP_FILE1} > /dev/null
-            source ${PROGDIR}/core/chan_text_out.shlib
-            _chan_text_out
+            *)
+                printf "%s\n" \
+                    "[co]unt       : total links saved" \
+                    "[fi]nd <word> : find links by word" \
+                    "[sa]ve <link> : saves link to file by nick" \
+                    "[sh]ow        : this shows the last 10 added links" \
+                    "[sh]ow <num>  : this shows the last XX added links" \
+                    "[sh]ow <nick> : same as above but by nick" \
+                    | tee -a ${TMP_FILE1} > /dev/null
+                source ${PROGDIR}/core/chan_text_out.shlib
+                _chan_text_out
             ;;
     esac
 fi
