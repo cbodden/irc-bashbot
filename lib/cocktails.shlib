@@ -1,0 +1,17 @@
+# help text - show random cocktails
+function .cocktails()
+{
+    >${TMP_FILE1}
+
+    source ${PROGDIR}/core/chan_text_out.shlib
+
+    curl -qs http://www.barnonedrinks.com/drinks/random/ \
+        | grep -A 1 "<dt>" \
+        | sed \
+        -e 's/<[^>]*>//g' \
+        -e 's/^[ \t]*//' \
+        -e '1~2s/^/>/' \
+        | tee -a ${TMP_FILE1} > /dev/null
+
+    _chan_text_out
+}
