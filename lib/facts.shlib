@@ -3,8 +3,6 @@ function .facts()
 {
     >${TMP_FILE1}
 
-    source ${PROGDIR}/core/chan_text_out.shlib
-
     if [[ -x $(which elinks 2>&1) ]]
     then
         local _FACT=$(elinks -dump randomfunfacts.com \
@@ -34,5 +32,6 @@ function .facts()
             "elinks is not installed" \
             | tee -a ${TMP_FILE1} > /dev/null
     fi
+    source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
 }
