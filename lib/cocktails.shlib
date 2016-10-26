@@ -3,7 +3,6 @@ function .cocktails()
 {
     >${TMP_FILE1}
 
-    source ${PROGDIR}/core/chan_text_out.shlib
 
     curl -qs http://www.barnonedrinks.com/drinks/random/ \
         | grep -A 1 "<dt>" \
@@ -12,6 +11,6 @@ function .cocktails()
         -e 's/^[ \t]*//' \
         -e '2~2s/^/  /' \
         | tee -a ${TMP_FILE1} > /dev/null
-
+    source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
 }
