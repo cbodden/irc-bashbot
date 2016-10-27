@@ -1,0 +1,21 @@
+# help text - message chan
+function .message()
+{
+    >${TMP_FILE1}
+
+    if [[ "${NAME}" == "${OWNER}" ]]
+    then
+        if [[ ! -n "${ARG}" ]]
+        then
+            printf "%s\n" \
+                "command : .message <message to send to chan>" \
+                | tee -a ${TMP_FILE1} > /dev/null
+            source ${PROGDIR}/core/chan_text_out.shlib
+            _chan_text_out
+            break 1
+        fi
+        SEND "PRIVMSG ${CHAN} :${ARG}"
+    else
+        SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
+    fi
+}
