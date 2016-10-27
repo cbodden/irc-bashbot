@@ -1,0 +1,41 @@
+# help text - list files in tree view
+function .tree()
+{
+    >${TMP_FILE1}
+
+    if [[ "${NAME}" == "${OWNER}" ]]
+    then
+        if [[ -x $(which tree 2>&1) ]]
+        then
+            local _TREE=$(tree -I 'log|*md|LICENSE')
+            # local _TREE=$(tree -I log -hs)
+
+            local _CNT=1
+            local _TCNT=$(grep -c . <<<"${_TREE}")
+            if (( $(grep -c . <<<"${_TREE}") > 1 ))
+            then
+                while [[ "${_CNT}" -le "${_TCNT}" ]]
+                do
+                    local _OUT=$(echo -e "${_TREE}" \
+                        | sed -n ${_CNT}p)
+                    printf "%s\n" \
+                        "${_OUT}" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                    let _CNT=_CNT+1
+                done
+            else
+                printf "%s\n" \
+                    "${_TREE}" \
+                    | tee -a ${TMP_FILE1} > /dev/null
+            fi
+        else
+            printf "%s\n" \
+                "tree is not installed" \
+                | tee -a ${TMP_FILE1} > /dev/null
+        fi
+        source ${PROGDIR}/core/chan_text_out.shlib
+        _chan_text_out
+    else
+        SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
+    fi
+}
