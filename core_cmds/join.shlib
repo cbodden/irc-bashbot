@@ -10,7 +10,7 @@ function .join()
             read -r -a _CHAN <<< "${ARG}"
         else
             printf "%s\n" \
-                "command : .join #chan1 #chan2<:key>" \
+                "command : .join <chan to leave> <chan to join:key>" \
                 | tee -a ${TMP_FILE1} > /dev/null
             source ${PROGDIR}/core/chan_text_out.shlib
             _chan_text_out
@@ -20,7 +20,7 @@ function .join()
         if [[ ! -n "${_CHAN[1]}" ]]
         then
             printf "%s\n" \
-                "command : .join #chan1 #chan2<:key>" \
+                "command : .join <chan to leave> <chan to join:key>" \
                 | tee -a ${TMP_FILE1} > /dev/null
             source ${PROGDIR}/core/chan_text_out.shlib
             _chan_text_out
