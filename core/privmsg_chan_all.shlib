@@ -8,12 +8,19 @@ function privmsg_chan_all()
                 _ELL=${_ELL#*/}
                 _ELL=${_ELL%.*}
                 echo ${_ELL}
+            done
+            for _ELL in core_cmds/*
+            do
+                _ELL=${_ELL#*/}
+                _ELL=${_ELL%.*}
+                echo ${_ELL}
             done))
             for LIB in "${_LIB[@]}"
             do
                 if [[ ".${LIB}" == "${CMD}" ]]
                 then
-                    source ${PROGDIR}/lib/${LIB}.shlib
+                    source ${PROGDIR}/lib/${LIB}.shlib 2>/dev/null || true
+                    source ${PROGDIR}/core_cmds/${LIB}.shlib 2>/dev/null || true
                     ${CMD}
                 fi
             done
