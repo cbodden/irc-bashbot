@@ -30,5 +30,7 @@ function .join()
             SEND "PART ${_CHAN[0]} :Leaving chan. Going to ${_CHAN[1]%:*}"
             SEND "JOIN ${_CHAN[1]%:*} ${_CHAN[1]#*:}"
         fi
+    else
+        SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
     fi
 }
