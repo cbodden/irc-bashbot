@@ -1,0 +1,34 @@
+# help text - leaves a chan and joins another
+function .join()
+{
+    >${TMP_FILE1}
+
+    if [[ "${NAME}" == "${OWNER}" ]]
+    then
+        if [[ -n "${ARG}" ]]
+        then
+            read -r -a _CHAN <<< "${ARG}"
+        else
+            printf "%s\n" \
+                "command : .join #chan1 #chan2<:key>" \
+                | tee -a ${TMP_FILE1} > /dev/null
+            source ${PROGDIR}/core/chan_text_out.shlib
+            _chan_text_out
+            break 1
+        fi
+
+        if [[ ! -n "${_CHAN[1]}" ]]
+        then
+            printf "%s\n" \
+                "command : .join #chan1 #chan2<:key>" \
+                | tee -a ${TMP_FILE1} > /dev/null
+            source ${PROGDIR}/core/chan_text_out.shlib
+            _chan_text_out
+            break 1
+        else
+            SEND "PRIVMSG ${_CHAN[0]} :Leaving chan. Going to ${_CHAN[1]%:*}"
+            SEND "PART ${_CHAN[0]} :Leaving chan. Going to ${_CHAN[1]%:*}"
+            SEND "JOIN ${_CHAN[1]%:*} ${_CHAN[1]#*:}"
+        fi
+    fi
+}
