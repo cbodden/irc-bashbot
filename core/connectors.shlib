@@ -10,8 +10,8 @@ function connectors()
     then
         sleep 20
         SEND "PRIVMSG nickserv :identify ${NICKSERV_PW}"
-        SEND "JOIN ${CHAN} ${CHAN_KEY}"
-    else
-        SEND "JOIN ${CHAN} ${CHAN_KEY}"
     fi
+
+    SEND "JOIN ${CHAN} ${CHAN_KEY}"
+    SEND "PRIVMSG ${OWNER} :i am on."
 }
