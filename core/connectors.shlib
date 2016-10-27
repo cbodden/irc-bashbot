@@ -14,4 +14,6 @@ function connectors()
 
     SEND "JOIN ${CHAN} ${CHAN_KEY}"
     SEND "PRIVMSG ${OWNER} :i am on."
+    SEND "PRIVMSG ${OWNER} :control me from here ${OWNER}"
+    SEND "PRIVMSG ${OWNER} :=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-="
 }
