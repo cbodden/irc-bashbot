@@ -16,6 +16,6 @@ function .message()
         fi
         SEND "PRIVMSG ${CHAN} :${ARG}"
     else
-        SEND "PRIVMSG ${CHANNEL} You are not registered to perform this action."
+        SEND "PRIVMSG ${CHAN} You are not registered to perform this action."
     fi
 }
