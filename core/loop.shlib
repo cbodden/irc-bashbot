@@ -12,6 +12,7 @@ function loop()
                 NAME=${1%%!*}
                 NAME=${NAME#:}
                 AUTH_NAME=${1##*!}
+                AUTH_NAME=${AUTH_NAME#*@}
                 AUTH_NAME=${AUTH_NAME%% *}
                 shift
                 ;;

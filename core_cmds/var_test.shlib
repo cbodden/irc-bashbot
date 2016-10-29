@@ -4,12 +4,14 @@ function .var_test()
     >${TMP_FILE1}
 
     printf "%s\n" \
-        "CHANNEL: ${CHANNEL}" \
-        "CMD    : ${CMD}" \
-        "ARG    : ${ARG}" \
-        "NAME   : ${NAME}" \
-        "NICK   : ${NICK}" \
-        "FUNC   : ${FUNCNAME[*]}" \
+        "CHANNEL    : ${CHANNEL}" \
+        "CMD        : ${CMD}" \
+        "ARG        : ${ARG}" \
+        "NAME       : ${NAME}" \
+        "NICK       : ${NICK}" \
+        "FUNC       : ${FUNCNAME[*]}" \
+        "AUTH_NAME  : ${AUTH_NAME}" \
+        "OWNER_AUTH : ${OWNER_AUTH}" \
         | tee -a ${TMP_FILE1} > /dev/null
     source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
