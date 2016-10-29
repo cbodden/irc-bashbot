@@ -14,3 +14,7 @@
 `OWNER_PW=""`
 #### nickserv password for registered nicks
 `NICKSERV_PW=""`
+#### this is for accounts that register against nickserv
+#### enter the hidden host of the bot if you are using the
+#### same creds to verify
+`OWNER_AUTH=""`
