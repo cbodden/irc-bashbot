@@ -2,6 +2,7 @@
 function .info()
 {
     >${TMP_FILE1}
+
     printf "%s\n" \
         "${PROGNAME%.*} is an irc bot written in bash." \
         "source can be found at : " \
