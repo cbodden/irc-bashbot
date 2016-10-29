@@ -16,6 +16,8 @@ function .info()
             | tail -1)" \
         "owner is : " \
         "  ${OWNER}" \
+        "revision number is : " \
+        "  $(awk '/REVISION/ {print $3}' ${PROGDIR}/${PROGNAME})" \
         | tee -a ${TMP_FILE1} > /dev/null
     source ${PROGDIR}/core/chan_text_out.shlib
     _chan_text_out
