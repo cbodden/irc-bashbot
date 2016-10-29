@@ -1,7 +1,7 @@
 # help text - this command kills the script
 function .kill()
 {
-    if [[ "${NAME}" == "${OWNER}" ]]
+    if [[ "${NAME}" == "${OWNER}" ]] || [[ "${OWNER_AUTH}" == "${AUTH_NAME}" ]]
     then
         SEND "PRIVMSG ${CHANNEL} Kill triggered by ${NAME}"
         SEND "PART ${CHANNEL} Kill triggered by ${NAME}"

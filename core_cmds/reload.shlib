@@ -1,7 +1,7 @@
 # help text - this command reloads the script
 function .reload()
 {
-    if [[ "${NAME}" == "${OWNER}" ]]
+    if [[ "${NAME}" == "${OWNER}" ]] || [[ "${OWNER_AUTH}" == "${AUTH_NAME}" ]]
     then
         SEND "PRIVMSG ${CHANNEL} Reload triggered by ${NAME}"
         SEND "PART ${CHANNEL} Reload triggered by ${NAME}"
