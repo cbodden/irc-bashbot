@@ -13,22 +13,47 @@ function .shodan()
     fi
 
     local _SHDN_ADDY="https://api.shodan.io/"
-    local _SHDN_DNS_R="dns/reverse?ips="
+    local _SHDN_DNS_RVRS="dns/reverse?ips="
+    local _SHDN_DNS_RSLV="dns/resolve?hostnames="
+    local SHDN_RVRS=${_SHDN_ADDY}${_SHDN_DNS_RVRS}
+    local SHDN_RSLV=${_SHDN_ADDY}${_SHDN_DNS_RSLV}
     local _K="\&key="
+    local _ADDY=""
 
     case "${_SHDN_OPT[0]}" in
-        "ip")
-            local _TEST_ADDY=$(eval echo \
-                "${_SHDN_ADDY}${_SHDN_DNS_R}${_SHDN_OPT[1]}${_K}${SHODAN_API}")
-            printf "%s\n" \
-                "$(curl -s ${_TEST_ADDY})" \
-                | tee -a ${TMP_FILE1} > /dev/null
-            _chan_text_out
+        "dns")
+            case "${_SHDN_OPT[1]}" in
+                "resolve"|"res")
+                    local _ADDY="${SHDN_RSLV}${_SHDN_OPT[2]}${_K}${SHODAN_API}"
+                    printf "%s\n" \
+                        "$(curl -s ${_ADDY})" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                    _chan_text_out
+                    ;;
+                "reverse"|"rev")
+                    local _ADDY="${SHDN_RVRS}${_SHDN_OPT[2]}${_K}${SHODAN_API}"
+                    printf "%s\n" \
+                        "$(curl -s ${_ADDY})" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                    _chan_text_out
+                    ;;
+                'help')
+                    printf "%s\n" \
+                        "Available dns switches:" \
+                        "[res]olve <hostname> : hostname resolve" \
+                        "[rev]erse <ip>       : ip reverse lookup" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                    _chan_text_out
+                    ;;
+                *)
+                    ;;
+            esac
             ;;
         "help")
             printf "%s\n" \
                 "Available shodan commands:" \
-                "[ip] <ip>  : ip reverse lookup" \
+                "[dns] [res]olve <hostname> : hostname resolve" \
+                "[dns] [rev]erse <ip>       : ip reverse lookup" \
                 | tee -a ${TMP_FILE1} > /dev/null
             _chan_text_out
             ;;
