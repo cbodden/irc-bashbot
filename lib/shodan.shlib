@@ -1,0 +1,39 @@
+# help text - use some shodan commands
+function .shodan()
+{
+    set -x
+    >${TMP_FILE1}
+    source ${PROGDIR}/core/chan_text_out.shlib
+
+    read -r -a _SHDN_OPT <<< "${ARG}"
+
+    if [[ -z "${ARG}" ]]
+    then
+        local _SHDN_OPT[0]=help
+    fi
+
+    local _SHDN_ADDY="https://api.shodan.io/"
+    local _SHDN_DNS_R="dns/reverse?ips="
+    local _K="\&key="
+
+    case "${_SHDN_OPT[0]}" in
+        "ip")
+            local _TEST_ADDY=$(eval echo \
+                "${_SHDN_ADDY}${_SHDN_DNS_R}${_SHDN_OPT[1]}${_K}${SHODAN_API}")
+            printf "%s\n" \
+                "$(curl -s ${_TEST_ADDY})" \
+                | tee -a ${TMP_FILE1} > /dev/null
+            _chan_text_out
+            ;;
+        "help")
+            printf "%s\n" \
+                "Available shodan commands:" \
+                "[ip]   : ip stuffs" \
+                | tee -a ${TMP_FILE1} > /dev/null
+            _chan_text_out
+            ;;
+        *)
+            ;;
+    esac
+    set +x
+}
