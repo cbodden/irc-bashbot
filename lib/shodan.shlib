@@ -24,28 +24,28 @@ function .shodan()
         "dns")
             case "${_SHDN_OPT[1]}" in
                 "resolve"|"res")
-                    local _ADDY="${SHDN_RSLV}${_SHDN_OPT[2]}${_K}${SHODAN_API}"
+                    local _ADDY=$(eval echo \
+                        "${SHDN_RSLV}${_SHDN_OPT[2]}${_K}${SHODAN_API}")
                     printf "%s\n" \
                         "$(curl -s ${_ADDY})" \
                         | tee -a ${TMP_FILE1} > /dev/null
                     _chan_text_out
                     ;;
                 "reverse"|"rev")
-                    local _ADDY="${SHDN_RVRS}${_SHDN_OPT[2]}${_K}${SHODAN_API}"
+                    local _ADDY=$(eval echo \
+                        "${SHDN_RVRS}${_SHDN_OPT[2]}${_K}${SHODAN_API}")
                     printf "%s\n" \
                         "$(curl -s ${_ADDY})" \
                         | tee -a ${TMP_FILE1} > /dev/null
                     _chan_text_out
                     ;;
-                'help')
+                'help'|*)
                     printf "%s\n" \
                         "Available dns switches:" \
                         "[res]olve <hostname> : hostname resolve" \
                         "[rev]erse <ip>       : ip reverse lookup" \
                         | tee -a ${TMP_FILE1} > /dev/null
                     _chan_text_out
-                    ;;
-                *)
                     ;;
             esac
             ;;
