@@ -33,6 +33,7 @@ function .links()
                         "$(awk '{print $1}' ${LINKFILE} \
                         | sort \
                         | uniq -c \
+                        | sort -n -r \
                         | column -t )" \
                         | tee -a ${TMP_FILE1} > /dev/null
                 else
