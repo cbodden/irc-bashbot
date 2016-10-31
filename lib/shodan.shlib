@@ -10,7 +10,7 @@ function .shodan()
 
     if [[ -z "${ARG}" ]]
     then
-        local _SHDN_OPT[0]=help
+        local _SHDN_OPT[0]="help"
     fi
 
     local _SHDN_ADDY="https://api.shodan.io/"
