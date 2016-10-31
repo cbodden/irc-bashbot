@@ -27,6 +27,10 @@ function .shodan()
                 "resolve"|"res")
                     if [[ -z "${_SHDN_OPT[2]}" ]]
                     then
+                        printf "%s\n" \
+                            "needs hostname" \
+                            | tee -a ${TMP_FILE1} > /dev/null
+                        _chan_text_out
                         break 1
                     fi
                     local _ADDY=$(eval echo \
@@ -38,6 +42,10 @@ function .shodan()
                 "reverse"|"rev")
                     if [[ -z "${_SHDN_OPT[2]}" ]]
                     then
+                        printf "%s\n" \
+                            "needs ip address" \
+                            | tee -a ${TMP_FILE1} > /dev/null
+                        _chan_text_out
                         break 1
                     fi
                     local _ADDY=$(eval echo \
