@@ -1,4 +1,4 @@
-# help text - use some shodan commands
+# help text - use some shodan tools
 function .shodan()
 {
     >${TMP_FILE1}
@@ -34,7 +34,6 @@ function .shodan()
                     printf "%s\n" \
                         "$(curl -s ${_ADDY})" \
                         | tee -a ${TMP_FILE1} > /dev/null
-                    _chan_text_out
                     ;;
                 "reverse"|"rev")
                     if [[ -z "${_SHDN_OPT[2]}" ]]
@@ -46,7 +45,6 @@ function .shodan()
                     printf "%s\n" \
                         "$(curl -s ${_ADDY})" \
                         | tee -a ${TMP_FILE1} > /dev/null
-                    _chan_text_out
                     ;;
                 "help"|*)
                     printf "%s\n" \
@@ -54,19 +52,16 @@ function .shodan()
                         "[res]olve <hostname> : hostname resolve" \
                         "[rev]erse <ip>       : ip reverse lookup" \
                         | tee -a ${TMP_FILE1} > /dev/null
-                    _chan_text_out
                     ;;
             esac
             ;;
-        "help")
+        "help"|*)
             printf "%s\n" \
                 "Available shodan commands:" \
                 "[dns] [res]olve <hostname> : hostname resolve" \
                 "[dns] [rev]erse <ip>       : ip reverse lookup" \
                 | tee -a ${TMP_FILE1} > /dev/null
-            _chan_text_out
-            ;;
-        *)
             ;;
     esac
+    _chan_text_out
 }
