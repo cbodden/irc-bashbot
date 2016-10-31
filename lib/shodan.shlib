@@ -4,6 +4,7 @@ function .shodan()
     >${TMP_FILE1}
 
     source ${PROGDIR}/core/chan_text_out.shlib
+    source ${PROGDIR}/config/irc_bashbot.config
 
     read -r -a _SHDN_OPT <<< "${ARG}"
 
