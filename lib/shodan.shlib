@@ -25,6 +25,10 @@ function .shodan()
         "dns")
             case "${_SHDN_OPT[1]}" in
                 "resolve"|"res")
+                    if [[ -z "${_SHDN_OPT[2]}" ]]
+                    then
+                        break 1
+                    fi
                     local _ADDY=$(eval echo \
                         "${SHDN_RSLV}${_SHDN_OPT[2]}${_K}${SHODAN_API}")
                     printf "%s\n" \
@@ -33,6 +37,10 @@ function .shodan()
                     _chan_text_out
                     ;;
                 "reverse"|"rev")
+                    if [[ -z "${_SHDN_OPT[2]}" ]]
+                    then
+                        break 1
+                    fi
                     local _ADDY=$(eval echo \
                         "${SHDN_RVRS}${_SHDN_OPT[2]}${_K}${SHODAN_API}")
                     printf "%s\n" \
@@ -40,7 +48,7 @@ function .shodan()
                         | tee -a ${TMP_FILE1} > /dev/null
                     _chan_text_out
                     ;;
-                'help'|*)
+                "help"|*)
                     printf "%s\n" \
                         "Available dns switches:" \
                         "[res]olve <hostname> : hostname resolve" \
