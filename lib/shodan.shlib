@@ -1,8 +1,8 @@
 # help text - use some shodan commands
 function .shodan()
 {
-    set -x
     >${TMP_FILE1}
+
     source ${PROGDIR}/core/chan_text_out.shlib
 
     read -r -a _SHDN_OPT <<< "${ARG}"
@@ -28,12 +28,11 @@ function .shodan()
         "help")
             printf "%s\n" \
                 "Available shodan commands:" \
-                "[ip]   : ip stuffs" \
+                "[ip] <ip>  : ip reverse lookup" \
                 | tee -a ${TMP_FILE1} > /dev/null
             _chan_text_out
             ;;
         *)
             ;;
     esac
-    set +x
 }
