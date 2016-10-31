@@ -1,4 +1,4 @@
-# help text - this command shows some aws information
+# help text - show some aws information
 function .aws()
 {
     >${TMP_FILE1}

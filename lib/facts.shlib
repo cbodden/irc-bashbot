@@ -1,4 +1,4 @@
-# help text - this command shows random facts
+# help text - show a random fact
 function .facts()
 {
     >${TMP_FILE1}
