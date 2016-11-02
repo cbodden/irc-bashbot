@@ -1,6 +1,5 @@
 function logging()
 {
-    set -x
     local _DATE=$(date +"%Y%m%e_%H%M%S" \
         | tr ' ' '0')
     _LOGPATH="log/"
@@ -21,5 +20,4 @@ function logging()
         find ${_LOGPATH}* -mtime +7 -exec rm {} \;
         ln -s ${LOG} current.log
     fi
-    set +x
 }
