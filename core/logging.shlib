@@ -1,6 +1,8 @@
 function logging()
 {
-    local _DATE=$(date +"%Y%m%e_%H%M%S")
+    set -x
+    local _DATE=$(date +"%Y%m%e_%H%M%S" \
+        | tr ' ' '0')
     _LOGPATH="log/"
     _LOGFILE="${PROGNAME%.*}_${_DATE}.log"
     LOG="${_LOGPATH}${_LOGFILE}"
@@ -10,7 +12,7 @@ function logging()
         mkdir ${_LOGPATH}
     fi
 
-    if [[ -L "current.log" ]]
+    if [[ -L "${PROGDIR}/current.log" ]]
     then
         rm current.log
         find ${_LOGPATH}* -mtime +7 -exec rm {} \;
@@ -19,4 +21,5 @@ function logging()
         find ${_LOGPATH}* -mtime +7 -exec rm {} \;
         ln -s ${LOG} current.log
     fi
+    set +x
 }
