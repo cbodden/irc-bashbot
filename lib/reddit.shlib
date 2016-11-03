@@ -23,30 +23,34 @@ function .reddit()
         mkdir ${_RDDTPATH}
     fi
 
-    local _CNT=0
+    function _rddt_list()
+    {
+        printf "%s\n" \
+            "Here is the list of subreddits stored: "\
+            | tee -a  ${TMP_FILE1} > /dev/null
+        for _LIST in ${_RDDTPATH}*.rddt
+        do
+            _LIST=${_LIST##*/}
+            _LIST=${_LIST%.*}
+            printf "%s\n" \
+                "${_LIST}" \
+                | tee -a ${TMP_FILE1} > /dev/null
+        done
+        _chan_text_out
+    }
+
     if [[ ${#_ARG[@]} -ge 1 ]]
     then
         case "${_ARG[0]}" in
             'list'|'li'|'lis')
-                printf "%s\n" \
-                    "Here is the list of subreddits stored: "\
-                    | tee -a  ${TMP_FILE1} > /dev/null
-                for _LIST in ${_RDDTPATH}*.rddt
-                do
-                    _LIST=${_LIST##*/}
-                    _LIST=${_LIST%.*}
-                    printf "%s\n" \
-                        "${_LIST}" \
-                        | tee -a ${TMP_FILE1} > /dev/null
-                done
-                _chan_text_out
+                _rddt_list
                 ;;
             'random'|'ra'|'rndm')
                 if [[ -z "${_ARG[1]}" ]]
                 then
+                    _rddt_list
                     break 1
                 fi
-
 
                 if [[ ! -e ${RDDTFILE} ]]
                 then
@@ -72,9 +76,7 @@ function .reddit()
                         sed -i \
                             -e '/^ *$/d' \
                             ${RDDTFILE}
-
                     else
-
                         find ${RDDTFILE} \
                             -mindepth 1 \
                             -mtime +7 \
@@ -107,4 +109,6 @@ function .reddit()
                 ;;
         esac
     fi
+
+    unset _rddt_list
 }
