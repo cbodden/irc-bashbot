@@ -100,7 +100,7 @@ function .reddit()
                     | tee -a ${TMP_FILE1} > /dev/null
                 _chan_text_out
                 ;;
-            'help'|*)
+            *)
                 printf "%s\n" \
                     "[li]st               : show stored subreddits" \
                     "[ra]ndom <subreddit> : display rand subreddit topic" \
