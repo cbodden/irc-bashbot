@@ -4,6 +4,8 @@ function .reddit()
     set -x
     >${TMP_FILE1}
 
+    source ${PROGDIR}/core/chan_text_out.shlib
+
     if [[ -n "${ARG}" ]]
     then
         read -r -a _ARG <<< "${ARG}"
@@ -11,7 +13,7 @@ function .reddit()
         local _ARG=""
     fi
 
-    local _RDDTPATH="misc/"
+    local _RDDTPATH="${PROGDIR}/misc/"
     local _RDDTFILE="${_ARG[1]}.rddt"
     local RDDTFILE="${_RDDTPATH}${_RDDTFILE}"
     local _ADDY="https://www.reddit.com/r/"
@@ -26,6 +28,20 @@ function .reddit()
     if [[ ${#_ARG[@]} -ge 1 ]]
     then
         case "${_ARG[0]}" in
+            'list'|'li'|'lis')
+                printf "%s\n" \
+                    "Here is the list of subreddits stored: "\
+                    | tee -a  ${TMP_FILE1} > /dev/null
+                for _LIST in ${_RDDTPATH}*.rddt
+                do
+                    _LIST=${_LIST##*/}
+                    _LIST=${_LIST%.*}
+                    printf "%s\n" \
+                        "${_LIST}" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                done
+                _chan_text_out
+                ;;
             'random'|'ra'|'rndm')
                 if [[ -z "${_ARG[1]}" ]]
                 then
@@ -78,14 +94,13 @@ function .reddit()
                     "${_RDDT[${INDEX}]}" \
                     "${_RDDT[$((${INDEX}+1))]}" \
                     | tee -a ${TMP_FILE1} > /dev/null
-                source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
                 ;;
             'help'|*)
                 printf "%s\n" \
-                    "[ra]ndom <subreddit name> : display rand subredit topic" \
+                    "[li]st               : show stored subreddits" \
+                    "[ra]ndom <subreddit> : display rand subreddit topic" \
                     | tee -a ${TMP_FILE1} > /dev/null
-                source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
                 ;;
         esac
