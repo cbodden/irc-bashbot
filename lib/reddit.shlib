@@ -83,13 +83,7 @@ function .reddit()
                 ;;
             'help'|*)
                 printf "%s\n" \
-                    "[co]unt             : total links saved" \
-                    "[fi]nd <word>       : find links by word" \
-                    "[sa]ve <link>       : saves link to file by nick" \
-                    "[sh]ow              : shows the last 10 added links" \
-                    "[sh]ow <num>        : shows the last XX added links" \
-                    "[sh]ow <nick>       : list links by nick" \
-                    "[sh]ow <nick> <num> : list xx links by nick" \
+                    "[ra]ndom <subreddit name> : display rand subredit topic" \
                     | tee -a ${TMP_FILE1} > /dev/null
                 source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
