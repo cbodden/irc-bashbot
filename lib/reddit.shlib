@@ -1,7 +1,6 @@
 # help text - display top 100 titles and urls for subreddit
 function .reddit()
 {
-    set -x
     >${TMP_FILE1}
 
     source ${PROGDIR}/core/chan_text_out.shlib
@@ -48,11 +47,6 @@ function .reddit()
                     break 1
                 fi
 
-                find ${RDDTFILE} \
-                    -mindepth 1 \
-                    -mtime +7 \
-                    -delete \
-                    || true
 
                 if [[ ! -e ${RDDTFILE} ]]
                 then
@@ -78,6 +72,14 @@ function .reddit()
                         sed -i \
                             -e '/^ *$/d' \
                             ${RDDTFILE}
+
+                    else
+
+                        find ${RDDTFILE} \
+                            -mindepth 1 \
+                            -mtime +7 \
+                            -delete \
+                            || true
                     fi
                 fi
 
@@ -90,7 +92,7 @@ function .reddit()
                     let INDEX=INDEX-1
                 fi
 
-                printf "%s\n" \
+                printf "%s" \
                     "${_RDDT[${INDEX}]}" \
                     "${_RDDT[$((${INDEX}+1))]}" \
                     | tee -a ${TMP_FILE1} > /dev/null
@@ -105,5 +107,4 @@ function .reddit()
                 ;;
         esac
     fi
-    set +x
 }

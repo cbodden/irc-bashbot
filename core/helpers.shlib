@@ -1,14 +1,12 @@
 # Basic helpers for communication with via IRC protocol
 function RECV()
 {
-    echo "[$(date +"%R")] [>>] $@" \
-        | tee -a ${LOG} 2>&1
+    echo "[$(date +"%R")] [>>] $@" >>${LOG} 2>&1
 }
 
 function SEND()
 {
-    echo "[$(date +"%R")] [<<] $@" \
-        | tee -a ${LOG} 2>&1
+    echo "[$(date +"%R")] [<<] $@" >>${LOG} 2>&1
     printf "%s\r\n" "$@" >&3
     sleep .25
 }
