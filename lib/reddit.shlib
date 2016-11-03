@@ -1,0 +1,100 @@
+# help text - display top 100 titles and urls for subreddit
+function .reddit()
+{
+    set -x
+    >${TMP_FILE1}
+
+    if [[ -n "${ARG}" ]]
+    then
+        read -r -a _ARG <<< "${ARG}"
+    else
+        local _ARG=""
+    fi
+
+    local _RDDTPATH="misc/"
+    local _RDDTFILE="${_ARG[1]}.rddt"
+    local RDDTFILE="${_RDDTPATH}${_RDDTFILE}"
+    local _ADDY="https://www.reddit.com/r/"
+    local _R_ADDY="/top.json?sort=top&t=week&limit=100"
+
+    if [[ ! -d "${_RDDTPATH}" ]]
+    then
+        mkdir ${_RDDTPATH}
+    fi
+
+    local _CNT=0
+    if [[ ${#_ARG[@]} -ge 1 ]]
+    then
+        case "${_ARG[0]}" in
+            'random'|'ra'|'rndm')
+                if [[ -z "${_ARG[1]}" ]]
+                then
+                    break 1
+                fi
+
+                find ${RDDTFILE} \
+                    -mindepth 1 \
+                    -mtime +7 \
+                    -delete \
+                    || true
+
+                if [[ ! -e ${RDDTFILE} ]]
+                then
+                    local _CHECK="$(curl \
+                        -A "${PROGNAME} $(date +"%Y%m%e_%H%M%S" | tr ' ' '0')" \
+                        -Is ${_ADDY}${_ARG[1]} \
+                        | head -1)"
+
+                    if [[ "${_CHECK}" == "HTTP/1.1 200"* ]]
+                    then
+                        curl \
+                            -s -A "${PROGNAME} $(uname)" \
+                            --connect-timeout 5 \
+                            ${_ADDY}${_ARG[1]}${_R_ADDY} \
+                            | python -m json.tool \
+                            | grep -E 'title|url' \
+                            | sed \
+                            -e 's/^[ \t]*//' \
+                            -e 's/,$//g' \
+                            -e '0~2 a\\' \
+                            -e 's/"//g' \
+                            | tee -a ${RDDTFILE} > /dev/null
+                        sed -i \
+                            -e '/^ *$/d' \
+                            ${RDDTFILE}
+                    fi
+                fi
+
+                local _RDDT=()
+                readarray _RDDT < ${RDDTFILE}
+                local INDEX=$(($RANDOM%${#_RDDT[@]}-1))
+
+                if [ $((${INDEX}%2)) -ne 0 ]
+                then
+                    let INDEX=INDEX-1
+                fi
+
+                printf "%s\n" \
+                    "${_RDDT[${INDEX}]}" \
+                    "${_RDDT[$((${INDEX}+1))]}" \
+                    | tee -a ${TMP_FILE1} > /dev/null
+                source ${PROGDIR}/core/chan_text_out.shlib
+                _chan_text_out
+                ;;
+            'help'|*)
+                printf "%s\n" \
+                    "[co]unt             : total links saved" \
+                    "[fi]nd <word>       : find links by word" \
+                    "[sa]ve <link>       : saves link to file by nick" \
+                    "[sh]ow              : shows the last 10 added links" \
+                    "[sh]ow <num>        : shows the last XX added links" \
+                    "[sh]ow <nick>       : list links by nick" \
+                    "[sh]ow <nick> <num> : list xx links by nick" \
+                    | tee -a ${TMP_FILE1} > /dev/null
+                source ${PROGDIR}/core/chan_text_out.shlib
+                _chan_text_out
+                ;;
+        esac
+    fi
+    set +x
+}
