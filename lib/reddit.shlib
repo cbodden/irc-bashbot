@@ -25,6 +25,7 @@ function .reddit()
 
     function _rddt_list()
     {
+        local _CNT=1
         printf "%s\n" \
             "Here is the list of subreddits stored: "\
             | tee -a  ${TMP_FILE1} > /dev/null
@@ -33,8 +34,9 @@ function .reddit()
             _LIST=${_LIST##*/}
             _LIST=${_LIST%.*}
             printf "%s\n" \
-                "${_LIST}" \
+                "[${_CNT}] ${_LIST}" \
                 | tee -a ${TMP_FILE1} > /dev/null
+            let _CNT=_CNT+1
         done
         _chan_text_out
     }
@@ -100,15 +102,49 @@ function .reddit()
                     | tee -a ${TMP_FILE1} > /dev/null
                 _chan_text_out
                 ;;
-            *)
-                printf "%s\n" \
-                    "[li]st               : show stored subreddits" \
-                    "[ra]ndom <subreddit> : display rand subreddit topic" \
-                    | tee -a ${TMP_FILE1} > /dev/null
-                _chan_text_out
-                ;;
-        esac
-    fi
+            'remove'|'del'|'rm')
+                if [[ -z "${_ARG[1]}" ]]
+                then
+                    _rddt_list
+                    break 1
+                else
+                    local _RDDT_RM=()
+                    local _RM_LIST=()
+                    declare -a _RDDT_RM=($( \
+                        for _RM_LIST in ${_RDDTPATH}*.rddt
+                        do
+                            _RM_LIST=${_RM_LIST##*/}
+                            _RM_LIST=${_RM_LIST%.*}
+                            echo ${_RM_LIST}
+                        done))
+                        case ${_ARG[2]} in
+                            ''|*[!0-9]*)
+                                rm ${_RDDTPATH}${_RDDT_RM[${_ARG[2]}]}.rddt
+                                printf "%s\n" \
+                                    "deleted ${_RDDT_RM[${_ARG[2]}]}" \
+                                    | tee -a ${TMP_FILE1} > /dev/null
+                                _chan_text_out
+                                ;;
+                            *)
+                                rm ${_RDDTPATH}${_ARG[2]}.rddt
+                                printf "%s\n" \
+                                    "deleted ${_ARG[2]}" \
+                                    | tee -a ${TMP_FILE1} > /dev/null
+                                _chan_text_out
+                                ;;
+                        esac
+                    fi
+                    ;;
+                *)
+                    printf "%s\n" \
+                        "[li]st               : show stored subreddits" \
+                        "[ra]ndom <subreddit> : display rand subreddit topic" \
+                        "[rm] <subreddit #>   : delete stored subreddit file" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                    _chan_text_out
+                    ;;
+            esac
+        fi
 
-    unset _rddt_list
-}
+        unset _rddt_list
+    }
