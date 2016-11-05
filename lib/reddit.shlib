@@ -47,6 +47,7 @@ function .reddit()
             'list'|'li'|'lis')
                 _rddt_list
                 ;;
+
             'random'|'ra'|'rndm')
                 if [[ -z "${_ARG[1]}" ]]
                 then
@@ -54,69 +55,94 @@ function .reddit()
                     break 1
                 fi
 
-                if [[ ! -e ${RDDTFILE} ]]
-                then
-                    local _CHECK="$(curl \
-                        -A "${PROGNAME} $(date +"%Y%m%e_%H%M%S" | tr ' ' '0')" \
-                        -Is ${_ADDY}${_ARG[1]} \
-                        | head -1)"
+                local _RDDT_RA=()
+                local _RA_LIST=()
 
-                    if [[ "${_CHECK}" == "HTTP/1.1 200"* ]]
+                declare -a _RDDT_RA=($( \
+                    for _RA_LIST in ${_RDDTPATH}*.rddt
+                    do
+                        _RA_LIST=${_RA_LIST##*/}
+                        _RA_LIST=${_RA_LIST%.*}
+                        echo ${_RA_LIST}
+                    done))
+
+                    case ${_ARG[2]} in
+                        ''|*[!0-9]*)
+                            local _RDDTFILE="${_RDDT_RA[${_ARG[2]}]}"
+                            local RDDTFILE="${_RDDTPATH}${_RDDTFILE}.rddt"
+                            ;;
+                        *)
+                            local _RDDTFILE="${_ARG[2]}"
+                            local RDDTFILE="${_RDDTPATH}${_ARG[2]}.rddt"
+                            ;;
+                    esac
+
+                    if [[ ! -e ${RDDTFILE} ]]
                     then
-                        curl \
-                            -s -A "${PROGNAME} $(uname)" \
-                            --connect-timeout 5 \
-                            ${_ADDY}${_ARG[1]}${_R_ADDY} \
-                            | python -m json.tool \
-                            | grep -E 'title|url' \
-                            | sed \
-                            -e 's/^[ \t]*//' \
-                            -e 's/,$//g' \
-                            -e '0~2 a\\' \
-                            -e 's/"//g' \
-                            | tee -a ${RDDTFILE} > /dev/null
-                        sed -i \
-                            -e '/^ *$/d' \
-                            ${RDDTFILE}
-                    else
-                        find ${RDDTFILE} \
-                            -mindepth 1 \
-                            -mtime +7 \
-                            -delete \
-                            || true
+                        local _CHECK="$(curl \
+                            -A "${PROGNAME} $(date +"%Y%m%e_%H%M%S" \
+                            | tr ' ' '0')" \
+                            -Is ${_ADDY}${_RDDTFILE} \
+                            | head -1)"
+
+                        if [[ "${_CHECK}" == "HTTP/1.1 200"* ]]
+                        then
+                            curl \
+                                -s -A "${PROGNAME} $(uname)" \
+                                --connect-timeout 5 \
+                                ${_ADDY}${_RDDTFILE}${_R_ADDY} \
+                                | python -m json.tool \
+                                | grep -E 'title|url' \
+                                | sed \
+                                -e 's/^[ \t]*//' \
+                                -e 's/,$//g' \
+                                -e '0~2 a\\' \
+                                -e 's/"//g' \
+                                | tee -a ${RDDTFILE} > /dev/null
+                            sed -i \
+                                -e '/^ *$/d' \
+                                ${RDDTFILE}
+                        else
+                            find ${RDDTFILE} \
+                                -mindepth 1 \
+                                -mtime +7 \
+                                -delete \
+                                || true
+                        fi
                     fi
-                fi
 
-                local _RDDT=()
-                readarray _RDDT < ${RDDTFILE}
-                local INDEX=$(($RANDOM%${#_RDDT[@]}-1))
+                    local _RDDT=()
+                    readarray _RDDT < ${RDDTFILE}
+                    local INDEX=$(($RANDOM%${#_RDDT[@]}-1))
 
-                if [ $((${INDEX}%2)) -ne 0 ]
-                then
-                    let INDEX=INDEX-1
-                fi
+                    if [ $((${INDEX}%2)) -ne 0 ]
+                    then
+                        let INDEX=INDEX-1
+                    fi
 
-                printf "%s" \
-                    "${_RDDT[${INDEX}]}" \
-                    "${_RDDT[$((${INDEX}+1))]}" \
-                    | tee -a ${TMP_FILE1} > /dev/null
-                _chan_text_out
-                ;;
-            'remove'|'del'|'rm')
-                if [[ -z "${_ARG[1]}" ]]
-                then
-                    _rddt_list
-                    break 1
-                else
-                    local _RDDT_RM=()
-                    local _RM_LIST=()
-                    declare -a _RDDT_RM=($( \
-                        for _RM_LIST in ${_RDDTPATH}*.rddt
-                        do
-                            _RM_LIST=${_RM_LIST##*/}
-                            _RM_LIST=${_RM_LIST%.*}
-                            echo ${_RM_LIST}
-                        done))
+                    printf "%s" \
+                        "${_RDDT[${INDEX}]}" \
+                        "${_RDDT[$((${INDEX}+1))]}" \
+                        | tee -a ${TMP_FILE1} > /dev/null
+                    _chan_text_out
+
+                    ;;
+
+                'remove'|'del'|'rm')
+                    if [[ -z "${_ARG[1]}" ]]
+                    then
+                        _rddt_list
+                        break 1
+                    else
+                        local _RDDT_RM=()
+                        local _RM_LIST=()
+                        declare -a _RDDT_RM=($( \
+                            for _RM_LIST in ${_RDDTPATH}*.rddt
+                            do
+                                _RM_LIST=${_RM_LIST##*/}
+                                _RM_LIST=${_RM_LIST%.*}
+                                echo ${_RM_LIST}
+                            done))
                         case ${_ARG[2]} in
                             ''|*[!0-9]*)
                                 rm ${_RDDTPATH}${_RDDT_RM[${_ARG[2]}]}.rddt
@@ -135,16 +161,16 @@ function .reddit()
                         esac
                     fi
                     ;;
-                *)
-                    printf "%s\n" \
-                        "[li]st               : show stored subreddits" \
-                        "[ra]ndom <subreddit> : display rand subreddit topic" \
-                        "[rm] <subreddit #>   : delete stored subreddit file" \
-                        | tee -a ${TMP_FILE1} > /dev/null
-                    _chan_text_out
-                    ;;
-            esac
-        fi
 
-        unset _rddt_list
-    }
+                    *)
+                        printf "%s\n" \
+                            "[li]st               : show stored subreddits" \
+                            "[ra]ndom <subreddit> : display rand subreddit topic" \
+                            "[rm] <subreddit #>   : delete stored subreddit file" \
+                            | tee -a ${TMP_FILE1} > /dev/null
+                        _chan_text_out
+                        ;;
+                esac
+            fi
+            unset _rddt_list
+        }
