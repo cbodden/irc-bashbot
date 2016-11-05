@@ -66,14 +66,30 @@ function .reddit()
                         echo ${_RA_LIST}
                     done))
 
-                    case ${_ARG[2]} in
-                        ''|*[!0-9]*)
-                            local _RDDTFILE="${_RDDT_RA[${_ARG[2]}]}"
-                            local RDDTFILE="${_RDDTPATH}${_RDDTFILE}.rddt"
+                    _RDDTFILE=()
+                    RDDTFILE=()
+                    case "${_ARG[1]}" in
+                        [0-9]|[0-9][0-9])
+                            if [[ "${_ARG[1]}" -gt "${#_RDDT_RA[@]}" ]]
+                            then
+                                _rddt_list
+                                break 1
+                            fi
+
+                            if [[ "${_ARG[1]}" -ge 2 ]]
+                            then
+                                local _RCNT=${_ARG[1]}
+                                let _RCNT=_RCNT-1
+                            else
+                                local _RCNT=${_ARG[1]}
+                                _RCNT=0
+                            fi
+                            _RDDTFILE="${_RDDT_RA[${_RCNT}]}"
+                            RDDTFILE="${_RDDTPATH}${_RDDTFILE}.rddt"
                             ;;
                         *)
-                            local _RDDTFILE="${_ARG[2]}"
-                            local RDDTFILE="${_RDDTPATH}${_ARG[2]}.rddt"
+                            _RDDTFILE="${_ARG[1]}"
+                            RDDTFILE="${_RDDTPATH}${_ARG[1]}.rddt"
                             ;;
                     esac
 
@@ -111,7 +127,9 @@ function .reddit()
                         fi
                     fi
 
+
                     local _RDDT=()
+                    local INDEX=()
                     readarray _RDDT < ${RDDTFILE}
                     local INDEX=$(($RANDOM%${#_RDDT[@]}-1))
 
