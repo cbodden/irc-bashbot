@@ -164,9 +164,9 @@ function .reddit()
 
                     *)
                         printf "%s\n" \
-                            "[li]st               : show stored subreddits" \
-                            "[ra]ndom <subreddit> : display rand subreddit topic" \
-                            "[rm] <subreddit #>   : delete stored subreddit file" \
+                            "[li]st                 : show stored subreddits" \
+                            "[ra]ndom <subreddit #> : display rand subreddit topic" \
+                            "[rm] <subreddit #>     : delete stored subreddit file" \
                             | tee -a ${TMP_FILE1} > /dev/null
                         _chan_text_out
                         ;;
