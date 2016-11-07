@@ -13,16 +13,16 @@ function .help()
         local _OCNT=0
         local _ACNT="${#_HELP[@]}"
         printf "%s %s\n" \
-            "${YLW}${NICK} v$(awk '/REV/ {print $3}' ${PROGDIR}/${PROGNAME})" \
-            " - ${RED}the cheap sally knock off version" \
+            "${NICK} v$(awk '/REV/ {print $3}' ${PROGDIR}/${PROGNAME})" \
+            " - the cheap sally knock off version" \
             | tee -a ${TMP_FILE1} > /dev/null
         while [[ "${_OCNT}" -lt "${_ACNT}" ]]
         do
             local _HELP_TEXT=$(head -n 1 lib/${_HELP[${_OCNT}]}.shlib \
                 | sed -n -e 's/^.*- //p')
             printf "%s %s\n" \
-                "${RED}[command] ${YLW}.${_HELP[${_OCNT}]}" \
-                "${CYN} -  ${_HELP_TEXT}" \
+                "[command] .${_HELP[${_OCNT}]}" \
+                " -  ${_HELP_TEXT}" \
                 | tee -a ${TMP_FILE1} > /dev/null
             let _OCNT=_OCNT+1
         done
