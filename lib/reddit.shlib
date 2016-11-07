@@ -26,15 +26,15 @@ function .reddit()
     function _rddt_list()
     {
         local _CNT=1
-        printf "%s\n" \
-            "Here is the list of subreddits stored: "\
+        printf "%s %s\n" \
+            "${YLW}Here is the list of subreddits stored: "\
             | tee -a  ${TMP_FILE1} > /dev/null
         for _LIST in ${_RDDTPATH}*.rddt
         do
             _LIST=${_LIST##*/}
             _LIST=${_LIST%.*}
-            printf "%s\n" \
-                "[${_CNT}] ${_LIST}" \
+            printf "%s %s\n" \
+                "${RED}[${_CNT}] ${CYN}${_LIST}" \
                 | tee -a ${TMP_FILE1} > /dev/null
             let _CNT=_CNT+1
         done
@@ -138,9 +138,9 @@ function .reddit()
                         let INDEX=INDEX-1
                     fi
 
-                    printf "%s" \
-                        "${_RDDT[${INDEX}]}" \
-                        "${_RDDT[$((${INDEX}+1))]}" \
+                    printf "%s %s" \
+                        "${YLW}${_RDDT[${INDEX}]}" \
+                        "${CYN}${_RDDT[$((${INDEX}+1))]}" \
                         | tee -a ${TMP_FILE1} > /dev/null
                     _chan_text_out
 
