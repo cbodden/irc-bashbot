@@ -1,0 +1,24 @@
+# help text - message chan
+function .names()
+{
+    >${TMP_FILE1}
+
+    _NAMES=()
+
+    if [[ "${NAME}" == "${OWNER}" ]]
+    then
+        if [[ ! -n "${ARG}" ]]
+        then
+            printf "%s\n" \
+                "command : .message <message to send to chan>" \
+                | tee -a ${TMP_FILE1} > /dev/null
+            source ${PROGDIR}/core/chan_text_out.shlib
+            _chan_text_out
+            break 1
+        fi
+        readarray _NAMES < $(SEND "NAMES ${CHAN}")
+        echo ${#_NAMES[@]}
+    else
+        SEND "PRIVMSG ${CHAN} You are not registered to perform this action."
+    fi
+}
