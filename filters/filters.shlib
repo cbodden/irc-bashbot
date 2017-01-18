@@ -15,14 +15,14 @@ _filters()
         _WORD=$(echo -e "${_FILTER[${_CNT}]}" \
             | tr -d '[[:space:]]')
         case ${_WORD} in
-            [Oo][Nn][Ee])
+            [Oo][Nn][Ee][Ee][Ee])
                 printf "%s\n" \
                     "matching word: ${_WORD}" \
                     | tee -a ${TMP_FILE1} > /dev/null
                 source ${PROGDIR}/core/chan_text_out.shlib
                 _chan_text_out
                 ;;
-            [Tt][Ee][Ss][Tt])
+            [Tt][Ee][Ss][Tt][Tt][Tt])
                 source ${PROGDIR}/filters/words/test.shlib
                 word_test
                 ;;
