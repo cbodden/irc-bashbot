@@ -1,0 +1,6 @@
+# help text - this is to set in room reminders
+function .remind()
+{
+    >${TMP_FILE1}
+
+    source ${PROGDIR}/core/chan_text_out.shlib
