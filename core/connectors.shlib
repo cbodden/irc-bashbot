@@ -3,12 +3,21 @@ function connectors()
     exec 3<>/dev/tcp/${SERVER}/${PORT} \
         || { echo "Could not connect"; exit 1; }
 
+    ## cap sasl enable
+    SEND "PING"
+    sleep 5
+    SEND "CAP REQ :sasl"
     SEND "NICK ${NICK}"
     SEND "USER ${NICK} 0 * :${NICK}"
 
     if [[ ! -z ${NICKSERV_PW} ]]
     then
         sleep 20
+        ## cap auth plain
+        SEND "AUTHENTICATE PLAIN"
+        SEND "AUTHENTICATE ${NICKSERV_PW}"
+        SEND "CAP END"
+        ## disable privmsg to test sasl auth
         SEND "PRIVMSG nickserv :identify ${NICKSERV_PW}"
     fi
 
