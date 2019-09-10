@@ -51,7 +51,8 @@ _filters()
 
                 local _DESC=$(curl -s ${_WORD} \
                     | grep -o "<title>[^<]*" \
-                    | cut -c 8-)
+                    | cut -c 8- \
+                    | head -n 1 )
 
                 local _LINK_GR=${_WORD#*http://}
                 _LINK_GR=${_LINK_GR#*www.}
