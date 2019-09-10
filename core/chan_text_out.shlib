@@ -21,10 +21,11 @@ function _chan_text_out()
     if [[ ${_WCNT} -gt ${_CNT_OUT} ]]
     then 
         SEND "PRIVMSG ${CHANNEL} ${NAME} : Sending to pm's since its more than ${_CNT_OUT} lines"
+        SEND "PRIVMSG ${NAME} : -=-=-=-=-=-= Here you go =-=-=-=-=-=-"
         while [[ "${_CNT}" -le "${_FCNT}" ]]
         do
             local _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
-            SEND "PRIVMSG ${NAME} :${_OUT}"
+            SEND "PRIVMSG ${NAME} :  ${_OUT}"
             let _CNT=_CNT+1
             sleep .4
         done
