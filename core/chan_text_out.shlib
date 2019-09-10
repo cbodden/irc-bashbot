@@ -15,10 +15,26 @@ function _chan_text_out()
     local _CNT=1
     local _FCNT=$(wc -l ${TMP_FILE2} \
         | awk '{print $1}')
+    local _WCNT=${_FCNT}
+
+    local _CNT_OUT=8
+    if [[ ${_WCNT} -gt ${_CNT_OUT} ]]
+    then 
+        SEND "PRIVMSG ${CHANNEL} ${NAME} : Sending to pm's since its more than ${_CNT_OUT} lines"
+        while [[ "${_CNT}" -le "${_FCNT}" ]]
+        do
+            local _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
+            SEND "PRIVMSG ${NAME} :${_OUT}"
+            let _CNT=_CNT+1
+            sleep .4
+        done
+    fi
+
     while [[ "${_CNT}" -le "${_FCNT}" ]]
     do
         local _OUT=$(sed -n ${_CNT}p ${TMP_FILE2})
         SEND "PRIVMSG ${CHANNEL} ${_OUT}"
         let _CNT=_CNT+1
+        sleep .4
     done
 }
