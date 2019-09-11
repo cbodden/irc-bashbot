@@ -6,39 +6,43 @@ function .reddit_random()
     if [[ -x $(which elinks 2>&1) ]]
     then
 	local _RDDTRNDM=$(curl \
-	    -s \
-	    -A $(date +"%Y%m%e_%H%M%S" | tr ' ' '0') \
-	    --connect-timeout 5 \
-	    -X GET \
-	    -L 'https://www.reddit.com/r/random/top/.json?limit=1' \
-	    | python -m json.tool \
-	    | grep -E 'title|url' \
-	    | sed  \
-	        -e 's/^[ \t]*//' \
-	        -e 's/,$//g' \
-	        -e 's/"//g' \
-	        -e 's/^mod_reason_title: null//' \
-	        -e '0,/^$/{//d}' \
-	    | sed \
-		-e "/\b\(author:\)\b/d" \
-		-e "/\b\(author_url\)\b/d" \
-		-e "/\b\(content\)\b/d" \
-		-e "/\b\(dash_url\)\b/d" \
-		-e "/\b\(external-preview\)\b/d" \
-		-e "/\b\(hls_url\)\b/d" \
-		-e "/\b\(html:\)\b/d" \
-		-e "/\b\(html: &lt;\)\b/d" \
-		-e "/\b\(icon_url\)\b/d" \
-		-e "/\b\(media_domain_url\)\b/d" \
-		-e "/\b\(permalink\)\b/d" \
-		-e "/\b\(preview.redd.it\)\b/d" \
-		-e "/\b\(provider_url\)\b/d" \
-		-e "/\b\(redditstatic\)\b/d" \
-		-e "/\b\(scrubber_media_url\)\b/d" \
-		-e "/\b\(selftext\)\b/d" \
-		-e "/\b\(selftext_html\)\b/d" \
-		-e "/\b\(thumbnail_url\)\b/d" \
-	    | awk '!x[$0]++' )
+    	    -s \
+    	    -A $(date +"%Y%m%e_%H%M%S" | tr ' ' '0') \
+    	    --connect-timeout 5 \
+    	    -X GET \
+    	    -L 'https://www.reddit.com/r/random/top/.json?limit=1' \
+    	    | python -m json.tool \
+    	    | grep -E 'title|subreddit|url' \
+    	    | sed  \
+    	        -e 's/^[ \t]*//' \
+    	        -e 's/,$//g' \
+    	        -e 's/"//g' \
+    	        -e '0,/^$/{//d}' \
+    	    | sed \
+    	        -e '/author/d' \
+    	        -e '/author_url/d' \
+    	        -e '/content/d' \
+    	        -e '/dash_url/d' \
+    	        -e '/external-preview/d' \
+    	        -e '/hls_url/d' \
+    	        -e '/html: &lt;/d' \
+    	        -e '/html:/d' \
+    	        -e '/icon_url/d' \
+    	        -e '/media_domain_url/d' \
+    	        -e '/permalink/d' \
+    	        -e '/preview.redd.it/d' \
+    	        -e '/provider_url/d' \
+    	        -e '/redditstatic/d' \
+    	        -e '/scrubber_media_url/d' \
+    	        -e '/selftext/d' \
+    	        -e '/selftext_html/d' \
+    	        -e '/subreddit_id:/d' \
+    	        -e '/subreddit_name_prefixed:/d' \
+    	        -e '/subreddit_subscribers:/d' \
+    	        -e '/subreddit_type:/d' \
+    	        -e '/thumbnail_url/d' \
+    	        -e 's/^mod_reason_title: null//' \
+    	    | awk '!x[$0]++' )
         local _CNT=1
         local _FCNT=$(grep -c . <<<"${_RDDTRNDM}")
         if (( $(grep -c . <<<"${_RDDTRNDM}") > 1 ))
