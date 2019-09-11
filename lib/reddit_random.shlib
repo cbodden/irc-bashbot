@@ -17,6 +17,7 @@ function .reddit_random()
     	        -e 's/^[ \t]*//' \
     	        -e 's/,$//g' \
     	        -e 's/"//g' \
+    	        -e 's/^mod_reason_title: null//' \
     	        -e '0,/^$/{//d}' \
     	    | sed \
     	        -e '/author/d' \
@@ -36,12 +37,12 @@ function .reddit_random()
     	        -e '/scrubber_media_url/d' \
     	        -e '/selftext/d' \
     	        -e '/selftext_html/d' \
+    	        -e '/subreddit_coin_reward:/d' \
     	        -e '/subreddit_id:/d' \
     	        -e '/subreddit_name_prefixed:/d' \
     	        -e '/subreddit_subscribers:/d' \
     	        -e '/subreddit_type:/d' \
     	        -e '/thumbnail_url/d' \
-    	        -e 's/^mod_reason_title: null//' \
     	    | awk '!x[$0]++' )
         local _CNT=1
         local _FCNT=$(grep -c . <<<"${_RDDTRNDM}")
