@@ -14,7 +14,7 @@ function .help()
         local _ACNT="${#_HELP[@]}"
         printf "%s %s\n" \
             "${NICK} v$(awk '/REV/ {print $3}' ${PROGDIR}/${PROGNAME})" \
-            " - the cheap sally knock off version" \
+            " - the improved sally knock off version" \
             | tee -a ${TMP_FILE1} > /dev/null
         while [[ "${_OCNT}" -lt "${_ACNT}" ]]
         do
