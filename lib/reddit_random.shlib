@@ -20,23 +20,25 @@ function .reddit_random()
 	        -e 's/^mod_reason_title: null//' \
 	        -e '0,/^$/{//d}' \
 	    | sed \
-	        -e "/\b\(author_url\)\b/d" \
-	        -e "/\b\(content\)\b/d" \
-	        -e "/\b\(dash_url\)\b/d" \
-	        -e "/\b\(external-preview\)\b/d" \
-	        -e "/\b\(fallback_url\)\b/d" \
-	        -e "/\b\(hls_url\)\b/d" \
-	        -e "/\b\(html:\)\b/d" \
-	        -e "/\b\(icon_url\)\b/d" \
-	        -e "/\b\(media_domain_url\)\b/d" \
-	        -e "/\b\(permalink\)\b/d" \
-	        -e "/\b\(preview.redd.it\)\b/d" \
-	        -e "/\b\(provider_url\)\b/d" \
-	        -e "/\b\(redditstatic\)\b/d" \
-	        -e "/\b\(scrubber_media_url\)\b/d" \
-	        -e "/\b\(selftext\)\b/d" \
-	        -e "/\b\(selftext_html\)\b/d" \
-	        -e "/\b\(thumbnail_url\)\b/d" )
+		-e "/\b\(author:\)\b/d" \
+		-e "/\b\(author_url\)\b/d" \
+		-e "/\b\(content\)\b/d" \
+		-e "/\b\(dash_url\)\b/d" \
+		-e "/\b\(external-preview\)\b/d" \
+		-e "/\b\(hls_url\)\b/d" \
+		-e "/\b\(html:\)\b/d" \
+		-e "/\b\(html: &lt;\)\b/d" \
+		-e "/\b\(icon_url\)\b/d" \
+		-e "/\b\(media_domain_url\)\b/d" \
+		-e "/\b\(permalink\)\b/d" \
+		-e "/\b\(preview.redd.it\)\b/d" \
+		-e "/\b\(provider_url\)\b/d" \
+		-e "/\b\(redditstatic\)\b/d" \
+		-e "/\b\(scrubber_media_url\)\b/d" \
+		-e "/\b\(selftext\)\b/d" \
+		-e "/\b\(selftext_html\)\b/d" \
+		-e "/\b\(thumbnail_url\)\b/d" \
+	    | awk '!x[$0]++' )
         local _CNT=1
         local _FCNT=$(grep -c . <<<"${_RDDTRNDM}")
         if (( $(grep -c . <<<"${_RDDTRNDM}") > 1 ))
