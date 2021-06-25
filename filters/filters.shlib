@@ -13,9 +13,10 @@ _filters()
     while [[ "${_CNT}" -lt "${#_FILTER[@]}" ]]
     do
         _WORD=$(echo -e "${_FILTER[${_CNT}]}" \
-            | tr -d '[[:space:]]')
+            | tr -d '[[:space:]]' \
+            | tr -d '\*')
         case ${_WORD} in
-            [Oo][Nn][Ee])
+            i[Oo][Nn][Ee])
                 printf "%s\n" \
                     "matching word: ${_WORD}" \
                     | tee -a ${TMP_FILE1} > /dev/null
@@ -26,6 +27,14 @@ _filters()
                 source ${PROGDIR}/filters/words/test.shlib
                 word_test
                 ;;
+            [*])
+                printf "%s\n" \
+                    "you clever girl" \
+                    | tee -a ${TMP_FILE1} > /dev/null
+                source ${PROGDIR}/core/chan_text_out.shlib
+                _chan_text_out
+                ;;
+
             *)
                 ;;
         esac

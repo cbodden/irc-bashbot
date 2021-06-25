@@ -2,22 +2,22 @@ function logging()
 {
     local _DATE=$(date +"%Y%m%e_%H%M%S" \
         | tr ' ' '0')
-    _LOGPATH="log/"
+    _LOGPATH="${PWD}/log/"
     _LOGFILE="${PROGNAME%.*}_${_DATE}.log"
     LOG="${_LOGPATH}${_LOGFILE}"
 
-    if [[ ! -d "${_LOGPATH}" ]]
-    then
-        mkdir ${_LOGPATH}
-    fi
+    #if [[ ! -d "${_LOGPATH}" ]]
+    #then
+    #    mkdir ${_LOGPATH}
+    #fi
 
-    if [[ -L "${PROGDIR}/current.log" ]]
-    then
-        rm current.log
-        find ${_LOGPATH}* -mtime +7 -exec rm {} \;
-        ln -s ${LOG} current.log
-    else
-        find ${_LOGPATH}* -mtime +7 -exec rm {} \;
-        ln -s ${LOG} current.log
-    fi
+    ##if [[ -L "${PROGDIR}/current.log" ]]
+    ##then
+    ##    rm current.log
+    ##    find ${_LOGPATH}* -mtime +7 -exec rm {} \;
+    ##    ln -s ${LOG} current.log
+    ##else
+    ##    find ${_LOGPATH}* -mtime +7 -exec rm {} \;
+    ##    ln -s ${LOG} current.log
+    ##fi
 }
