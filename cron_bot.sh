@@ -14,9 +14,5 @@ done
 
 sleep 5
 
-<<<<<<< HEAD
-~/git/mine/irc-bashbot/irc_bashbot.sh
-=======
 cd ~/git/mine/irc-bashbot/
 ./irc_bashbot.sh
->>>>>>> devwork
