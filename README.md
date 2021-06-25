@@ -38,7 +38,6 @@ Requirements
 ----
 
 - Bash (https://www.gnu.org/software/bash/)
-- For AWS lib: AWS cli tools (https://aws.amazon.com/cli/)
 - For Facts lib: Elinks (http://elinks.or.cz/)
 
 License and Author
@@ -46,7 +45,7 @@ License and Author
 
 Author:: Cesar Bodden (cesar@pissedoffadmins.com)
 
-Copyright:: 2016, Pissedoffadmins.com
+Copyright:: 2016-2021, Pissedoffadmins.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
